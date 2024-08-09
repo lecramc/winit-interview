@@ -1,6 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
-const TrafficCourtSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+
+const TrafficCourtSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -10,12 +12,12 @@ const TrafficCourtSchema = new mongoose.Schema({
     type: String,
   },
   trafficCounty: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'TrafficCounty',
     required: true,
   },
   trafficState: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'TrafficState',
     required: true,
   },
@@ -27,6 +29,6 @@ const TrafficCourtSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-})
+});
 
-export default mongoose.model('TrafficCourt', TrafficCourtSchema)
+export default mongoose.models.TrafficCourt || mongoose.model('TrafficCourt', TrafficCourtSchema);

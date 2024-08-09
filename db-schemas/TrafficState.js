@@ -1,6 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
-const TrafficStateSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+
+const TrafficStateSchema = new Schema({
   shortName: {
     type: String,
     required: true,
@@ -15,6 +17,6 @@ const TrafficStateSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-})
+});
 
-export default mongoose.model('TrafficState', TrafficStateSchema)
+export default mongoose.models.TrafficState || mongoose.model('TrafficState', TrafficStateSchema);

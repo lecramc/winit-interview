@@ -1,8 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const { Schema } = mongoose;
-
-const ViolationSchema = new Schema({
+const ViolationSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -12,6 +10,6 @@ const ViolationSchema = new Schema({
     type: Number,
     required: true,
   },
-});
+})
 
-export default mongoose.models.Violation || mongoose.model('Violation', ViolationSchema);
+export default mongoose.model('Violation', ViolationSchema)

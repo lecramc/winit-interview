@@ -1,23 +1,16 @@
-import { types } from 'mobx-state-tree'
+// stores/models/Attorney.js
+import { types } from 'mobx-state-tree';
 
 const Attorney = types
   .model('Attorney', {
-    objectId: types.identifier,
+    _id: types.identifier,
     enabled: types.optional(types.boolean, false),
-    chatEnabled: types.optional(types.boolean, false),
     name: types.string,
-    companyName: types.string,
-    contactEmail: types.string,
-    contactPhone: types.maybe(types.string),
-    summary: types.maybe(types.string),
-    impMessage: types.maybe(types.string),
-    createdAt: types.maybeNull(types.string),
-    updatedAt: types.maybeNull(types.string),
-    quoteOrder: types.maybeNull(types.number, 0),
-    banner: types.frozen({}), // image
-    avatar: types.frozen({}), // image
+    email: types.string,
+    phone: types.maybe(types.string),
+    address: types.maybe(types.string),
   })
   .views((self) => ({}))
-  .actions((self) => ({}))
+  .actions((self) => ({}));
 
-export default Attorney
+export default Attorney;

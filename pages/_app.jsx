@@ -1,16 +1,22 @@
-// MobX state management
 import { Provider as MobxProvider } from 'mobx-react'
 import mobxStore from '@/stores/AppStore'
-// Theme
 import ThemeProvider from '@/stores/providers/ThemeProvider'
+import DashboardLayout from '@/components/DashboardLayout'
 
-// Global Styles
+import './globals.css'
+import SessionProvider from './provider' // Assurez-vous que le chemin est correct
+import Footer from '@/components/footer'
 
 const App = ({ Component, pageProps }) => {
   return (
-    <MobxProvider store={mobxStore}>
+    <MobxProvider value={mobxStore}>
       <ThemeProvider>
-        <Component {...pageProps} />
+        <SessionProvider>
+          <DashboardLayout>
+            <Component {...pageProps} />
+          </DashboardLayout>
+          <Footer />
+        </SessionProvider>
       </ThemeProvider>
     </MobxProvider>
   )

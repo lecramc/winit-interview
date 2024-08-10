@@ -1,23 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const { Schema } = mongoose;
-
-const AttorneyPriceMapSchema = new Schema({
+const AttorneyPriceMapSchema = new mongoose.Schema({
   attorney: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Attorney',
     required: true,
   },
   court: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'TrafficCourt',
   },
   county: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'TrafficCounty',
   },
   violation: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Violation',
   },
   points: {
@@ -28,6 +26,6 @@ const AttorneyPriceMapSchema = new Schema({
     type: Number,
     required: true,
   },
-});
+})
 
-export default mongoose.models.AttorneyPriceMap || mongoose.model('AttorneyPriceMap', AttorneyPriceMapSchema);
+export default mongoose.model('AttorneyPriceMap', AttorneyPriceMapSchema)

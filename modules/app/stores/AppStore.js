@@ -1,10 +1,20 @@
 import { types } from 'mobx-state-tree'
 import ThemeStore from '@/modules/app/stores/ThemeStore'
 import AttorneyStore from '@/modules/attorney/core/stores/attorney.store.js'
+import AttorneyPriceMapStore from '@/modules/attorney-price-map/core/stores/attorney-price-map.store.js'
+import ViolationStore from '@/modules/violation/core/stores/violation.store.js'
+import TrafficCountyStore from '@/modules/traffic-county/core/stores/traffic-county.store.js'
+import TrafficCourtStore from '@/modules/traffic-court/core/stores/traffic-court.store.js'
+import TrafficStateStore from '@/modules/traffic-state/core/stores/traffic-state.store.js'
 
 const AppStore = types
   .model('AppStore', {
     attorney: types.optional(AttorneyStore, { attorneys: [] }),
+    attorneyPriceMap: types.optional(AttorneyPriceMapStore, { priceMaps: [] }),
+    violation: types.optional(ViolationStore, { violations: [] }),
+    trafficCounty: types.optional(TrafficCountyStore, { trafficCounties: [] }),
+    trafficCourt: types.optional(TrafficCourtStore, { trafficCourts: [] }),
+    trafficState: types.optional(TrafficStateStore, { trafficStates: [] }),
     theme: types.optional(ThemeStore, {}),
   })
   .actions((self) => ({
@@ -14,7 +24,6 @@ const AppStore = types
   }))
 
 export const createStore = ({ initialState = {}, dependencies = {} }) => {
-  console.log(`From createStore: ${JSON.stringify(initialState)}`)
   const store = AppStore.create({ ...initialState })
   store.setDependencies(dependencies)
   return store

@@ -20,7 +20,11 @@ describe('Feature: delete attorney', () => {
 const initialState = {
   attorney: {
     attorneys: [
-      AttorneyFactory.create({ _id: '1', name: 'John Doe', email: 'john@example.com' }),
+      AttorneyFactory.create({
+        _id: '1',
+        name: 'John Doe',
+        email: 'john@example.com',
+      }),
       AttorneyFactory.create({ _id: '2', name: 'John Cafe', email: 'john@example.com' }),
     ],
     state: 'pending',

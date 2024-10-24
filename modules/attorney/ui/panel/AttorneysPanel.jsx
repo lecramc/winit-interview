@@ -43,7 +43,10 @@ const AttorneysPanel = observer(() => {
       content = (
         <>
           <HeaderPanel />
-          <AttorneyList attorneys={viewModel.attorneys} />
+          <AttorneyList
+            attorneys={viewModel.attorneys}
+            deleteAttorney={attorneyStore.deleteAttorney}
+          />
           <FooterPanel />
         </>
       )

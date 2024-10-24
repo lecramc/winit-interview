@@ -1,40 +1,41 @@
 import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
-import { ViolationGateway } from '@/modules/violation/core/gateways/violation.gateway.js'
+import { TrafficCourtGateway } from '@/modules/traffic-court/core/gateways/traffic-court.gateway.js'
 
-const attorneyDto = z.object({
+const trafficCourtDto = z.object({
   _id: z.string(),
   name: z.string(),
-  email: z.string(),
-  address: z.optional(z.string()),
-  phone: z.optional(z.string()),
-  enabled: z.boolean(),
-})
-const deleteAttorneyDto = z.object({
-  success: z.boolean(),
-  data: attorneyDto,
-})
-const getAttorneysDto = z.object({
-  success: z.boolean(),
-  data: z.array(attorneyDto),
+  address: z.string(),
+  trafficCounty: z.string(),
+  trafficState: z.string(),
+  stateShortName: z.string(),
 })
 
-export class HttpTrafficCourtGateway extends ViolationGateway {
-  async getAttorneys() {
-    const unvalidatedResponse = await axios.get('/attorney-data')
-    const result = getAttorneysDto.safeParse(unvalidatedResponse.data)
+const getTrafficCourtsDto = z.object({
+  success: z.boolean(),
+  data: z.array(trafficCourtDto),
+})
+
+const deleteTrafficCourtDto = z.object({
+  success: z.boolean(),
+  data: trafficCourtDto,
+})
+
+export class HttpTrafficCourtGateway extends TrafficCourtGateway {
+  async getTrafficCourts() {
+    const unvalidatedResponse = await axios.get('/traffic-court-data')
+    const result = getTrafficCourtsDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to fetch attorneys')
+      throw new Error('Failed to fetch traffic courts')
     }
     return result.data.data
   }
-  async deleteAttorney(id) {
-    const unvalidatedResponse = await axios.delete(`/attorney-data/${id}`, { enabled: false })
 
-    const result = deleteAttorneyDto.safeParse(unvalidatedResponse.data)
-
+  async deleteTrafficCourt(id) {
+    const unvalidatedResponse = await axios.delete(`/traffic-court-data/${id}`)
+    const result = deleteTrafficCourtDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to delete attorney')
+      throw new Error('Failed to delete traffic court')
     }
     return result.data.data
   }

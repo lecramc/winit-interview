@@ -6,6 +6,7 @@ export class AttorneyFactory {
       email: '',
       address: '',
       phone: '',
+      enable: true,
       ...data,
     }
   }

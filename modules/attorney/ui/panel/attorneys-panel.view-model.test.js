@@ -5,6 +5,7 @@ import {
   attorneyViewModel,
   AttorneyViewModelType,
 } from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
+import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory.js'
 
 describe('AttorneyViewModel tests', () => {
   test('When state is pending, ViewModel type is Loading', () => {
@@ -18,7 +19,7 @@ describe('AttorneyViewModel tests', () => {
     })
 
     const attorneyStore = store.attorney
-    console.log(attorneyStore)
+
     const viewModel = attorneyViewModel(attorneyStore)
 
     expect(viewModel).toEqual({
@@ -45,7 +46,13 @@ describe('AttorneyViewModel tests', () => {
 
   test('When state is fulfilled, ViewModel type is loaded with attorneys', () => {
     const attorneysData = [
-      { _id: '1', name: 'John Doe', email: 'john@example.com', address: '', phone: '' },
+      AttorneyFactory.create({
+        _id: '1',
+        name: 'John Doe',
+        email: 'john@example.com',
+        address: '',
+        phone: '',
+      }),
     ]
 
     const store = createTestStore({

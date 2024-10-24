@@ -1,6 +1,6 @@
 import { flow, getParent, types } from 'mobx-state-tree'
 import { getTrafficCourts } from '@/modules/traffic-court/core/usecases/get-traffic-courts.usecase.js'
-import { getTrafficCourtById } from '@/modules/traffic-court/core/usecases/get-traffic-county-by-id.usecase.js'
+import { getTrafficCourtById } from '@/modules/traffic-court/core/usecases/get-traffic-court-by-id.usecase.js'
 import { createTrafficCourt } from '@/modules/traffic-court/core/usecases/create-traffic-court.usecase.js'
 import { updateTrafficCourt } from '@/modules/traffic-court/core/usecases/update-traffic-court.usecase.js'
 import { deleteTrafficCourt } from '@/modules/traffic-court/core/usecases/delete-traffic-court.usecase.js'

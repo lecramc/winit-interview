@@ -11,6 +11,7 @@ const AttorneyModel = types.model('Attorney', {
   email: types.string,
   address: types.optional(types.string, ''),
   phone: types.optional(types.string, ''),
+  enable: types.optional(types.boolean, true),
 })
 
 const AttorneyStore = types
@@ -79,7 +80,8 @@ const AttorneyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyGateway
-        self.attorneys = yield deleteAttorney({ id, attorneyGateway: gateway })
+        yield deleteAttorney({ id, attorneyGateway: gateway })
+        self.attorneys = self.attorneys.filter((attorney) => attorney._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'

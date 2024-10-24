@@ -5,12 +5,14 @@ import { FakeAttorneyGateway } from '@/modules/attorney/core/gateways-infra/fake
 
 describe('Feature: create attorney', () => {
   test('User creates a new attorney', async () => {
-    await whenCreatingANewAttorney({
-      name: 'John Doe',
-      email: 'john@example.com',
-      address: '123 Main St',
-      phone: '123-456-7890',
-    })
+    await whenCreatingANewAttorney(
+      AttorneyFactory.create({
+        name: 'John Doe',
+        email: 'john@example.com',
+        address: '123 Main St',
+        phone: '123-456-7890',
+      }),
+    )
 
     thenIShouldHaveCreatedAttorney(
       AttorneyFactory.create({

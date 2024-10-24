@@ -36,7 +36,7 @@ export class FakeAttorneyGateway extends AttorneyGateway {
     const index = this.attorneys.findIndex((attorney) => attorney._id === id)
     if (index !== -1) {
       this.attorneys.splice(index, 1)
-      return this.attorneys
+      return true
     }
     throw new Error(`Attorney with id ${id} not found`)
   }

@@ -2,39 +2,37 @@ import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
 import { ViolationGateway } from '@/modules/violation/core/gateways/violation.gateway.js'
 
-const attorneyDto = z.object({
+const violationDto = z.object({
   _id: z.string(),
   name: z.string(),
-  email: z.string(),
-  address: z.optional(z.string()),
-  phone: z.optional(z.string()),
-  enabled: z.boolean(),
+  points: z.number(),
 })
-const deleteAttorneyDto = z.object({
+
+const getViolationsDto = z.object({
   success: z.boolean(),
-  data: attorneyDto,
+  data: z.array(violationDto),
 })
-const getAttorneysDto = z.object({
+
+const deleteViolationDto = z.object({
   success: z.boolean(),
-  data: z.array(attorneyDto),
+  data: violationDto,
 })
 
 export class HttpViolationGateway extends ViolationGateway {
-  async getAttorneys() {
-    const unvalidatedResponse = await axios.get('/attorney-data')
-    const result = getAttorneysDto.safeParse(unvalidatedResponse.data)
+  async getViolations() {
+    const unvalidatedResponse = await axios.get('/violation-data')
+    const result = getViolationsDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to fetch attorneys')
+      throw new Error('Failed to fetch violations')
     }
     return result.data.data
   }
-  async deleteAttorney(id) {
-    const unvalidatedResponse = await axios.delete(`/attorney-data/${id}`, { enabled: false })
 
-    const result = deleteAttorneyDto.safeParse(unvalidatedResponse.data)
-
+  async deleteViolation(id) {
+    const unvalidatedResponse = await axios.delete(`/violation-data/${id}`)
+    const result = deleteViolationDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to delete attorney')
+      throw new Error('Failed to delete violation')
     }
     return result.data.data
   }

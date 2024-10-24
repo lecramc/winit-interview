@@ -1,40 +1,38 @@
 import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
-import { ViolationGateway } from '@/modules/violation/core/gateways/violation.gateway.js'
+import { TrafficStateGateway } from '@/modules/traffic-state/core/gateways/traffic-state.gateway.js'
 
-const attorneyDto = z.object({
+const trafficStateDto = z.object({
   _id: z.string(),
-  name: z.string(),
-  email: z.string(),
-  address: z.optional(z.string()),
-  phone: z.optional(z.string()),
-  enabled: z.boolean(),
-})
-const deleteAttorneyDto = z.object({
-  success: z.boolean(),
-  data: attorneyDto,
-})
-const getAttorneysDto = z.object({
-  success: z.boolean(),
-  data: z.array(attorneyDto),
+  longName: z.string(),
+  shortName: z.string(),
 })
 
-export class HttpTrafficStateGateway extends ViolationGateway {
-  async getAttorneys() {
-    const unvalidatedResponse = await axios.get('/attorney-data')
-    const result = getAttorneysDto.safeParse(unvalidatedResponse.data)
+const getTrafficStatesDto = z.object({
+  success: z.boolean(),
+  data: z.array(trafficStateDto),
+})
+
+const deleteTrafficStateDto = z.object({
+  success: z.boolean(),
+  data: trafficStateDto,
+})
+
+export class HttpTrafficStateGateway extends TrafficStateGateway {
+  async getTrafficStates() {
+    const unvalidatedResponse = await axios.get('/traffic-state-data')
+    const result = getTrafficStatesDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to fetch attorneys')
+      throw new Error('Failed to fetch traffic states')
     }
     return result.data.data
   }
-  async deleteAttorney(id) {
-    const unvalidatedResponse = await axios.delete(`/attorney-data/${id}`, { enabled: false })
 
-    const result = deleteAttorneyDto.safeParse(unvalidatedResponse.data)
-
+  async deleteTrafficState(id) {
+    const unvalidatedResponse = await axios.delete(`/traffic-state-data/${id}`)
+    const result = deleteTrafficStateDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to delete attorney')
+      throw new Error('Failed to delete traffic state')
     }
     return result.data.data
   }

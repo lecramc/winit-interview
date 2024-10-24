@@ -1,40 +1,39 @@
 import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
-import { ViolationGateway } from '@/modules/violation/core/gateways/violation.gateway.js'
+import { TrafficCountyGateway } from '@/modules/traffic-county/core/gateways/traffic-county.gateway.js'
 
-const attorneyDto = z.object({
+const trafficCountyDto = z.object({
   _id: z.string(),
   name: z.string(),
-  email: z.string(),
-  address: z.optional(z.string()),
-  phone: z.optional(z.string()),
-  enabled: z.boolean(),
-})
-const deleteAttorneyDto = z.object({
-  success: z.boolean(),
-  data: attorneyDto,
-})
-const getAttorneysDto = z.object({
-  success: z.boolean(),
-  data: z.array(attorneyDto),
+  trafficState: z.string(),
+  stateShortName: z.string(),
 })
 
-export class HttpTrafficCountyGateway extends ViolationGateway {
-  async getAttorneys() {
-    const unvalidatedResponse = await axios.get('/attorney-data')
-    const result = getAttorneysDto.safeParse(unvalidatedResponse.data)
+const getTrafficCountiesDto = z.object({
+  success: z.boolean(),
+  data: z.array(trafficCountyDto),
+})
+
+const deleteTrafficCountyDto = z.object({
+  success: z.boolean(),
+  data: trafficCountyDto,
+})
+
+export class HttpTrafficCountyGateway extends TrafficCountyGateway {
+  async getTrafficCounties() {
+    const unvalidatedResponse = await axios.get('/traffic-county-data')
+    const result = getTrafficCountiesDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to fetch attorneys')
+      throw new Error('Failed to fetch traffic counties')
     }
     return result.data.data
   }
-  async deleteAttorney(id) {
-    const unvalidatedResponse = await axios.delete(`/attorney-data/${id}`, { enabled: false })
 
-    const result = deleteAttorneyDto.safeParse(unvalidatedResponse.data)
-
+  async deleteTrafficCounty(id) {
+    const unvalidatedResponse = await axios.delete(`/traffic-county-data/${id}`)
+    const result = deleteTrafficCountyDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
-      throw new Error('Failed to delete attorney')
+      throw new Error('Failed to delete traffic county')
     }
     return result.data.data
   }

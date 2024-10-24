@@ -1,5 +1,5 @@
-import dbConnect from '@/utils/dbConnect'
-import Attorney from '@/db-schemas/Attorney'
+import dbConnect from '@/modules/app/utils/dbConnect'
+import Attorney from '@/db/mongo/schemas/Attorney'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const attorneys = await Attorney.find({})
+        const attorneys = await Attorney.find().select('-__v')
         res.status(200).json({ success: true, data: attorneys })
       } catch (error) {
         res.status(400).json({ success: false })

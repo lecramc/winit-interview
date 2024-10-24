@@ -1,14 +1,17 @@
 // MobX state management
 import { Provider as MobxProvider } from 'mobx-react'
-import mobxStore from '@/stores/AppStore'
 // Theme
-import ThemeProvider from '@/stores/providers/ThemeProvider'
+import { useCreateStore } from '@/modules/app/hooks/useCreateStore'
+import ThemeProvider from '@/modules/app/stores/providers/ThemeProvider'
+import { getSnapshot } from 'mobx-state-tree'
 
 // Global Styles
 
 const App = ({ Component, pageProps }) => {
+  const store = useCreateStore(pageProps.initialState)
+  console.log(pageProps.initialState, getSnapshot(store.attorney))
   return (
-    <MobxProvider store={mobxStore}>
+    <MobxProvider store={store}>
       <ThemeProvider>
         <Component {...pageProps} />
       </ThemeProvider>

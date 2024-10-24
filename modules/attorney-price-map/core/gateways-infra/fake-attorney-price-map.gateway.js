@@ -18,8 +18,9 @@ export class FakeAttorneyPriceMapGateway extends AttorneyPriceMapGateway {
   }
 
   async createAttorneyPriceMap(newAttorneyPriceMapData) {
-    this.attorneyPriceMaps.push(newAttorneyPriceMapData)
-    return newAttorneyPriceMapData
+    const newPriceMap = { ...newAttorneyPriceMapData, _id: 'newId' }
+    this.attorneyPriceMaps.push(newPriceMap)
+    return newPriceMap
   }
 
   async updateAttorneyPriceMap(updatedAttorneyPriceMapData) {

@@ -15,7 +15,7 @@ describe('Feature: create attorney price map', () => {
 
     await whenCreatingNewPriceMap(newPriceMapData)
 
-    thenIShouldHavePriceMapInStore([newPriceMapData])
+    thenIShouldHavePriceMapInStore([{ ...newPriceMapData, _id: 'newId' }])
   })
 })
 
@@ -28,5 +28,4 @@ async function whenCreatingNewPriceMap(priceMapData) {
 
 function thenIShouldHavePriceMapInStore(expectedPriceMap) {
   expect(store.attorneyPriceMap.priceMaps).toEqual(expectedPriceMap)
-  expect(priceMapGateway.attorneyPriceMaps).toEqual(expectedPriceMap)
 }

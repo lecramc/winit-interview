@@ -1,5 +1,5 @@
-import dbConnect from '@/modules/app/utils/dbConnect'
-import Attorney from '@/db/mongo/schemas/Attorney'
+import dbConnect from '@/modules/app/utils/dbConnect.js'
+import Attorney from '@/db/mongo/schemas/Attorney.js'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -16,15 +16,21 @@ export default async function handler(req, res) {
         res.status(400).json({ success: false })
       }
       break
-    case 'POST':
+    case 'DELETE':
       try {
-        const attorney = await Attorney.create(req.body)
-        res.status(201).json({ success: true, data: attorney })
+        const { id } = req.query
+
+        const attorney = await Attorney.findByIdAndDelete(id).select('-__v')
+
+        if (!attorney) {
+          return res.status(404).json({ success: false, message: 'Attorney not found' })
+        }
+
+        res.status(200).json({ success: true, data: attorney })
       } catch (error) {
-        res.status(400).json({ success: false })
+        res.status(400).json({ success: false, error: error.message })
       }
       break
-
     default:
       res.status(400).json({ success: false })
       break

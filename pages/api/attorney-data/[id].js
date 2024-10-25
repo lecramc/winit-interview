@@ -1,38 +1,26 @@
-import dbConnect from '@/modules/app/utils/dbConnect.js'
-import Attorney from '@/db/mongo/schemas/Attorney.js'
+import dbConnect from '@/modules/app/utils/dbConnect'
+import Violation from '@/db/mongo/schemas/Violation'
+import { withErrorHandling } from '@/modules/app/utils/errorMiddleware'
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   const { method } = req
-
   await dbConnect()
 
-  // To be completed
   switch (method) {
     case 'GET':
-      try {
-        const attorneys = await Attorney.find().select('-__v')
-        res.status(200).json({ success: true, data: attorneys })
-      } catch (error) {
-        res.status(400).json({ success: false })
-      }
+      const violations = await Violation.find().select('-__v')
+      res.status(200).json({ success: true, data: violations })
       break
-    case 'DELETE':
-      try {
-        const { id } = req.query
 
-        const attorney = await Attorney.findByIdAndDelete(id).select('-__v')
-
-        if (!attorney) {
-          return res.status(404).json({ success: false, message: 'Attorney not found' })
-        }
-
-        res.status(200).json({ success: true, data: attorney })
-      } catch (error) {
-        res.status(400).json({ success: false, error: error.message })
-      }
+    case 'POST':
+      const violation = await Violation.create(req.body)
+      res.status(201).json({ success: true, data: violation })
       break
+
     default:
-      res.status(400).json({ success: false })
+      res.status(405).json({ success: false, message: `Method ${method} not allowed` })
       break
   }
 }
+
+export default withErrorHandling(handler)

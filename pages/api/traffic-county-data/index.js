@@ -1,5 +1,5 @@
 import dbConnect from '@/modules/app/utils/dbConnect'
-import Attorney from '@/db/mongo/schemas/Attorney'
+import TrafficCounty from '@/db/mongo/schemas/TrafficCounty'
 import { withErrorHandling } from '@/modules/app/utils/errorMiddleware'
 
 async function handler(req, res) {
@@ -8,13 +8,13 @@ async function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const attorneys = await Attorney.find().select('-__v')
-      res.status(200).json({ success: true, data: attorneys })
+      const counties = await TrafficCounty.find().select('-__v')
+      res.status(200).json({ success: true, data: counties })
       break
 
     case 'POST':
-      const attorney = await Attorney.create(req.body)
-      res.status(201).json({ success: true, data: attorney })
+      const county = await TrafficCounty.create(req.body)
+      res.status(201).json({ success: true, data: county })
       break
 
     default:

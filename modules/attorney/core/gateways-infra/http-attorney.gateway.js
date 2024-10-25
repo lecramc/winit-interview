@@ -10,11 +10,13 @@ const attorneyDto = z.object({
   phone: z.optional(z.string()),
   enabled: z.boolean(),
 })
-const deleteAttorneyDto = z.object({
+
+const responseDto = z.object({
   success: z.boolean(),
   data: attorneyDto,
 })
-const getAttorneysDto = z.object({
+
+const responseArrayDto = z.object({
   success: z.boolean(),
   data: z.array(attorneyDto),
 })
@@ -22,19 +24,45 @@ const getAttorneysDto = z.object({
 export class HttpAttorneyGateway extends AttorneyGateway {
   async getAttorneys() {
     const unvalidatedResponse = await axios.get('/attorney-data')
-    const result = getAttorneysDto.safeParse(unvalidatedResponse.data)
+    const result = responseArrayDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
       throw new Error('Failed to fetch attorneys')
     }
     return result.data.data
   }
+
   async deleteAttorney(id) {
     const unvalidatedResponse = await axios.delete(`/attorney-data/${id}`)
-
-    const result = deleteAttorneyDto.safeParse(unvalidatedResponse.data)
-
+    const result = responseDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
       throw new Error('Failed to delete attorney')
+    }
+    return result.data.data
+  }
+
+  async getAttorneyById(id) {
+    const unvalidatedResponse = await axios.get(`/attorney-data/${id}`)
+    const result = responseDto.safeParse(unvalidatedResponse.data)
+    if (!result.success) {
+      throw new Error('Failed to fetch attorney by ID')
+    }
+    return result.data.data
+  }
+
+  async createAttorney(attorneyData) {
+    const unvalidatedResponse = await axios.post('/attorney-data', attorneyData)
+    const result = responseDto.safeParse(unvalidatedResponse.data)
+    if (!result.success) {
+      throw new Error('Failed to create attorney')
+    }
+    return result.data.data
+  }
+
+  async updateAttorney(attorneyData) {
+    const unvalidatedResponse = await axios.put(`/attorney-data/${attorneyData._id}`, attorneyData)
+    const result = responseDto.safeParse(unvalidatedResponse.data)
+    if (!result.success) {
+      throw new Error('Failed to update attorney')
     }
     return result.data.data
   }

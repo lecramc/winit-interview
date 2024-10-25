@@ -6,6 +6,7 @@ import ViolationStore from '@/modules/violation/core/stores/violation.store.js'
 import TrafficCountyStore from '@/modules/traffic-county/core/stores/traffic-county.store.js'
 import TrafficCourtStore from '@/modules/traffic-court/core/stores/traffic-court.store.js'
 import TrafficStateStore from '@/modules/traffic-state/core/stores/traffic-state.store.js'
+import { AuthStore } from '@/modules/auth/core/stores/auth.store.js'
 
 const AppStore = types
   .model('AppStore', {
@@ -15,6 +16,7 @@ const AppStore = types
     trafficCounty: types.optional(TrafficCountyStore, { trafficCounties: [] }),
     trafficCourt: types.optional(TrafficCourtStore, { trafficCourts: [] }),
     trafficState: types.optional(TrafficStateStore, { trafficStates: [] }),
+    auth: types.optional(AuthStore, {}),
     theme: types.optional(ThemeStore, {}),
   })
   .actions((self) => ({

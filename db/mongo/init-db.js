@@ -5,6 +5,8 @@ import TrafficCounty from '../../db/mongo/schemas/TrafficCounty.js'
 import Violation from '../../db/mongo/schemas/Violation.js'
 import AttorneyPriceMap from '../../db/mongo/schemas/AttorneyPriceMap.js'
 import Attorney from '../../db/mongo/schemas/Attorney.js'
+import User from '../../db/mongo/schemas/User.js'
+
 import dotenv from 'dotenv'
 import dbConnect from '../../modules/app/utils/dbConnect.js'
 import * as fs from 'node:fs'
@@ -18,6 +20,7 @@ export const dropDatabase = async () => {
   await TrafficCourt.deleteMany()
   await Violation.deleteMany()
   await AttorneyPriceMap.deleteMany()
+  await User.deleteMany()
 }
 
 export const seedDatabase = async () => {
@@ -150,6 +153,7 @@ export const seedDatabase = async () => {
       price: 320,
     },
   ])
+  await User.create({ email: 'user@example.com', name: 'user', password: 'password123' })
 
   console.log('Seeding completed')
 }

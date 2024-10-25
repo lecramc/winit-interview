@@ -1,0 +1,25 @@
+import { describe, expect, test } from 'vitest'
+import createTestStore from '@/modules/app/stores/TestStore'
+import { HttpAuthGateway } from '@/modules/auth/core/gateways-infra/http-auth.gateway.js'
+import { beforeEachConfig } from '@/modules/app/utils/beforEachConfig.js'
+
+let store
+
+beforeEach(async () => {
+  await beforeEachConfig()
+
+  const gateway = new HttpAuthGateway()
+  store = createTestStore({
+    dependencies: { authGateway: gateway },
+  })
+})
+
+describe('Integration test: login via auth API', () => {
+  test('login action sets cookie and updates store state to fulfilled', async () => {
+    const loginData = { email: 'user@example.com', password: 'password123' }
+
+    await store.auth.login(loginData)
+
+    expect(store.auth.authState).toBe('fulfilled')
+  })
+})

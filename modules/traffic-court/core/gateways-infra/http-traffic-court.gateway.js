@@ -5,35 +5,57 @@ import { TrafficCourtGateway } from '@/modules/traffic-court/core/gateways/traff
 const trafficCourtDto = z.object({
   _id: z.string(),
   name: z.string(),
-  address: z.string(),
+  address: z.string().optional(),
   trafficCounty: z.string(),
   trafficState: z.string(),
-  stateShortName: z.string(),
+  enabled: z.boolean(),
 })
 
-const getTrafficCourtsDto = z.object({
+const responseDto = z.object({
   success: z.boolean(),
-  data: z.array(trafficCourtDto),
-})
-
-const deleteTrafficCourtDto = z.object({
-  success: z.boolean(),
-  data: trafficCourtDto,
+  data: z.union([trafficCourtDto, z.array(trafficCourtDto)]),
 })
 
 export class HttpTrafficCourtGateway extends TrafficCourtGateway {
   async getTrafficCourts() {
-    const unvalidatedResponse = await axios.get('/traffic-court-data')
-    const result = getTrafficCourtsDto.safeParse(unvalidatedResponse.data)
+    const response = await axios.get('/traffic-court-data')
+    const result = responseDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to fetch traffic courts')
     }
     return result.data.data
   }
 
+  async getTrafficCourtById(id) {
+    const response = await axios.get(`/traffic-court-data/${id}`)
+    const result = responseDto.safeParse(response.data)
+    if (!result.success) {
+      throw new Error('Failed to fetch traffic court by ID')
+    }
+    return result.data.data
+  }
+
+  async createTrafficCourt(courtData) {
+    const response = await axios.post('/traffic-court-data', courtData)
+    const result = responseDto.safeParse(response.data)
+    if (!result.success) {
+      throw new Error('Failed to create traffic court')
+    }
+    return result.data.data
+  }
+
+  async updateTrafficCourt(courtData) {
+    const response = await axios.put(`/traffic-court-data/${courtData._id}`, courtData)
+    const result = responseDto.safeParse(response.data)
+    if (!result.success) {
+      throw new Error('Failed to update traffic court')
+    }
+    return result.data.data
+  }
+
   async deleteTrafficCourt(id) {
-    const unvalidatedResponse = await axios.delete(`/traffic-court-data/${id}`)
-    const result = deleteTrafficCourtDto.safeParse(unvalidatedResponse.data)
+    const response = await axios.delete(`/traffic-court-data/${id}`)
+    const result = responseDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to delete traffic court')
     }

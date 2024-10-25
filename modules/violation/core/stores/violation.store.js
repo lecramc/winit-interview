@@ -28,7 +28,7 @@ const ViolationStore = types
         self.state = 'rejected'
       }
     }),
-    fetchViolationById: flow(function* (id) {
+    getViolationById: flow(function* (id) {
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.violationGateway

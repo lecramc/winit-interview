@@ -6,7 +6,6 @@ export class TrafficCourtFactory {
       address: '',
       trafficState: '',
       trafficCounty: '',
-      stateShortName: '',
       ...data,
     }
   }

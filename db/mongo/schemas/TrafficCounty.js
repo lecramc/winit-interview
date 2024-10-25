@@ -11,14 +11,11 @@ const TrafficCountySchema = new mongoose.Schema({
     ref: 'TrafficState',
     required: true,
   },
-  stateShortName: {
-    type: String,
-    required: true,
-  },
+
   enabled: {
     type: Boolean,
     default: true,
   },
 })
 
-export default mongoose.models.TrafficCounty || mongoose.model('TrafficCounty', TrafficCountySchema);
+export default mongoose.models.TrafficCounty || mongoose.model('TrafficCounty', TrafficCountySchema)

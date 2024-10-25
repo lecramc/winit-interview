@@ -9,7 +9,7 @@ const TrafficCountyModel = types.model('TrafficCounty', {
   _id: types.identifier,
   name: types.string,
   trafficState: types.string,
-  stateShortName: types.string,
+  enable: types.optional(types.boolean, true),
 })
 
 const TrafficCountyStore = types

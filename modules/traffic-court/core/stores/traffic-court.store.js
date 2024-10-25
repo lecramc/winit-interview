@@ -11,7 +11,6 @@ const TrafficCourtModel = types.model('TrafficCourt', {
   address: types.string,
   trafficCounty: types.string,
   trafficState: types.string,
-  stateShortName: types.string,
 })
 
 const TrafficCourtStore = types

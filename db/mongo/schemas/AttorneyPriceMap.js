@@ -1,48 +1,53 @@
 import mongoose from 'mongoose'
 
-const AttorneyPriceMapSchema = new mongoose.Schema(
-  {
-    attorney: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Attorney',
-      required: true,
-    },
-    court: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'TrafficCourt',
-      required: function () {
-        return !this.county && !this.violation
+const AttorneyPriceMapSchema = new mongoose.Schema({
+  attorney: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Attorney',
+    required: true,
+  },
+  court: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TrafficCourt',
+  },
+  county: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TrafficCounty',
+  },
+  violation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Violation',
+  },
+  pointsRange: {
+    type: [Number],
+    validate: {
+      validator: function (v) {
+        return this.violation || (Array.isArray(v) && v.length === 2)
       },
-    },
-    county: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'TrafficCounty',
-      required: function () {
-        return !this.court && !this.violation
-      },
-    },
-    violation: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Violation',
-      required: function () {
-        return !this.court && !this.county
-      },
-    },
-    pointsRange: {
-      type: [Number, Number],
-      default: undefined,
-      required: function () {
-        return !this.violation
-      },
-    },
-    price: {
-      type: Number,
-      required: true,
+      message: 'pointsRange must be an array of two numbers if no violation is specified.',
     },
   },
-  {
-    timestamps: true,
+  price: {
+    type: Number,
+    required: true,
   },
-)
+})
+
+AttorneyPriceMapSchema.pre('validate', function (next) {
+  if (
+    !this.court &&
+    !this.county &&
+    !this.violation &&
+    !(this.pointsRange && this.pointsRange.length === 2)
+  ) {
+    return next(
+      new Error(
+        'At least one of the fields short, county, violation or pointsRange must be defined.',
+      ),
+    )
+  }
+  next()
+})
+
 export default mongoose.models.AttorneyPriceMap ||
   mongoose.model('AttorneyPriceMap', AttorneyPriceMapSchema)

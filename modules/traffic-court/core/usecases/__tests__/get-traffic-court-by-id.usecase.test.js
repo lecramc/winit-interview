@@ -9,7 +9,6 @@ describe('Feature: retrieve traffic court by ID', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
       TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court', stateShortName: 'TX' }),
     ])
@@ -20,7 +19,6 @@ describe('Feature: retrieve traffic court by ID', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
     )
   })
@@ -31,7 +29,6 @@ const initialState = {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
       TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court', stateShortName: 'TX' }),
     ],

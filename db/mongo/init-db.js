@@ -1,25 +1,26 @@
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
+// init-db.js
 import TrafficCourt from '../../db/mongo/schemas/TrafficCourt.js'
 import TrafficState from '../../db/mongo/schemas/TrafficState.js'
 import TrafficCounty from '../../db/mongo/schemas/TrafficCounty.js'
 import Violation from '../../db/mongo/schemas/Violation.js'
-import AttorneyPriceMaps from '../../db/mongo/schemas/AttorneyPriceMap.js'
 import AttorneyPriceMap from '../../db/mongo/schemas/AttorneyPriceMap.js'
 import Attorney from '../../db/mongo/schemas/Attorney.js'
+import dotenv from 'dotenv'
 import dbConnect from '../../modules/app/utils/dbConnect.js'
 import * as fs from 'node:fs'
+import mongoose from 'mongoose'
+import url from 'node:url'
 
-const dropDatabase = async () => {
+export const dropDatabase = async () => {
   await Attorney.deleteMany()
   await TrafficState.deleteMany()
   await TrafficCounty.deleteMany()
   await TrafficCourt.deleteMany()
   await Violation.deleteMany()
-  await AttorneyPriceMaps.deleteMany()
+  await AttorneyPriceMap.deleteMany()
 }
 
-const seedData = async () => {
+export const seedDatabase = async () => {
   const attorneys = await Attorney.create([
     {
       name: 'Alice Dupont',
@@ -60,12 +61,10 @@ const seedData = async () => {
     {
       name: 'Los Angeles County',
       trafficState: trafficStates[0]._id,
-      stateShortName: 'CA',
     },
     {
       name: 'Harris County',
       trafficState: trafficStates[1]._id,
-      stateShortName: 'TX',
     },
   ])
 
@@ -75,14 +74,12 @@ const seedData = async () => {
       address: '123 Broadway St',
       trafficCounty: trafficCounties[0]._id,
       trafficState: trafficStates[0]._id,
-      stateShortName: 'CA',
     },
     {
       name: 'Houston Traffic Court',
       address: '789 Bayou St',
       trafficCounty: trafficCounties[1]._id,
       trafficState: trafficStates[1]._id,
-      stateShortName: 'TX',
     },
   ])
 
@@ -157,25 +154,28 @@ const seedData = async () => {
   console.log('Seeding completed')
 }
 
-const main = async () => {
-  try {
-    dotenv.config({
-      path: fs.existsSync('.env') ? '.env' : '.env.local',
-    })
+const __filename = url.fileURLToPath(import.meta.url)
 
-    await dbConnect()
+if (process.argv[1] === __filename) {
+  const main = async () => {
+    try {
+      dotenv.config({
+        path: fs.existsSync('.env') ? '.env' : '.env.local',
+      })
+      await dbConnect()
 
-    console.log('Dropping database...')
-    await dropDatabase()
-    console.log('Database dropped')
-    console.log('Seeding database...')
-    await seedData()
-    console.log('Database seeded')
-  } catch (err) {
-    console.error('Seeding failed', err)
-  } finally {
-    await mongoose.connection.close()
+      console.log('Dropping database...')
+      await dropDatabase()
+      console.log('Database dropped')
+      console.log('Seeding database...')
+      await seedDatabase()
+      console.log('Database seeded')
+    } catch (err) {
+      console.error('Seeding failed', err)
+    } finally {
+      await mongoose.connection.close()
+    }
   }
-}
 
-await main()
+  await main()
+}

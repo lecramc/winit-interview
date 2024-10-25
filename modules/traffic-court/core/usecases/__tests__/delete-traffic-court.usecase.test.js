@@ -9,15 +9,14 @@ describe('Feature: delete traffic court', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
-      TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court', stateShortName: 'TX' }),
+      TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court' }),
     ])
 
     await whenDeletingTrafficCourt('1')
 
     thenTrafficCourtShouldBeDeleted([
-      TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court', stateShortName: 'TX' }),
+      TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court' }),
     ])
   })
 })
@@ -27,7 +26,6 @@ const initialState = {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
       TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court', stateShortName: 'TX' }),
     ],

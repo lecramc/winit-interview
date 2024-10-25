@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
+    "test": "vitest --config ./vitest.config.js",
+    "test:integration": "./run-vitest.integration.sh",
     "init-db": "node ./db/mongo/init-db.js"
   },
   "dependencies": {
@@ -31,11 +32,14 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.8",
     "@babel/plugin-proposal-decorators": "^7.24.7",
+    "@testcontainers/mongodb": "^10.13.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "^9.1.0",
+    "mongodb-memory-server": "^10.1.2",
     "postcss": "^8",
     "prettier": "^3.3.2",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "testcontainers": "^10.13.2"
   }
 }

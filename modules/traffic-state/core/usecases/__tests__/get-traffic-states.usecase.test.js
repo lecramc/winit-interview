@@ -20,9 +20,8 @@ describe('Feature: retrieve traffic courts', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
-      TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court', stateShortName: 'TX' }),
+      TrafficCourtFactory.create({ _id: '2', name: 'Houston Traffic Court' }),
     ])
   })
 })

@@ -8,7 +8,6 @@ describe('Feature: create traffic court', () => {
     const newTrafficCourtData = TrafficCourtFactory.create({
       _id: '3',
       name: 'San Francisco Traffic Court',
-      stateShortName: 'CA',
     })
 
     await whenCreatingNewTrafficCourt(newTrafficCourtData)

@@ -25,7 +25,7 @@ function givenPreviouslyCreatedViolations(previousViolations = []) {
 }
 
 async function whenRetrievingViolationById(id) {
-  await store.violation.fetchViolationById(id)
+  await store.violation.getViolationById(id)
 }
 
 function thenIShouldHaveViolationInStore(expectedViolation) {

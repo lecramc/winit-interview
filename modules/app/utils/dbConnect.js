@@ -7,11 +7,11 @@ import '../../../db/mongo/schemas/Violation.js'
 
 let isConnected
 
-export default async function dbConnect() {
+export default async function dbConnect(uri) {
   if (isConnected) {
     return
   }
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = uri ?? process.env.MONGODB_URI
 
   if (!mongoUri) {
     throw new Error('MONGODB_URI is not defined in your environment variables')

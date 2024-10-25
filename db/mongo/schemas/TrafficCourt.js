@@ -19,14 +19,10 @@ const TrafficCourtSchema = new mongoose.Schema({
     ref: 'TrafficState',
     required: true,
   },
-  stateShortName: {
-    type: String,
-    required: true,
-  },
   enabled: {
     type: Boolean,
     default: true,
   },
 })
 
-export default mongoose.models.TrafficCourt || mongoose.model('TrafficCourt', TrafficCourtSchema);
+export default mongoose.models.TrafficCourt || mongoose.model('TrafficCourt', TrafficCourtSchema)

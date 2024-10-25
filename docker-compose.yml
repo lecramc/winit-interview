@@ -1,30 +1,28 @@
-version: '3.8'
-
 services:
   mongo:
     image: mongo:latest
-    container_name: mongo
     ports:
-      - "27017:27017"
+      - "${MONGO_PORT:-27017}:27017"
     volumes:
-      - mongo-data:/data/db
+      - "mongo-data:/data/db"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME:-root}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD:-password}"
+
   nextjs:
     build: .
-    container_name: attorney-nextjs
     ports:
-      - "3000:3000"
+      - "${NEXT_PUBLIC_API_PORT:-3000}:3000"
     env_file:
       - .env.local
+    environment:
+      MONGODB_URI: "${MONGODB_URI:-mongodb://${MONGO_INITDB_ROOT_USERNAME:-root}:${MONGO_INITDB_ROOT_PASSWORD:-password}@${MONGO_SERVICE_NAME:-mongo}:27017/attorney_db?authSource=admin}"
+      NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-http://localhost:${NEXT_PUBLIC_API_PORT:-3000}}"
     volumes:
       - .:/app
     depends_on:
-      - mongo
-    command: /bin/sh -c "npm run init-db && npm run dev"
+      - "${MONGO_SERVICE_NAME:-mongo}"
+    command: /bin/sh -c "if [ \"$SKIP_INIT_DB\" = \"true\" ]; then echo 'Skipping init-db'; else npm run init-db; fi && npm run dev"
 
 volumes:
   mongo-data:
-
-

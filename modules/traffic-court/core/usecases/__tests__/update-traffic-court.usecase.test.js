@@ -9,7 +9,6 @@ describe('Feature: update traffic court', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
     ])
 
@@ -17,7 +16,6 @@ describe('Feature: update traffic court', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Orange County Traffic Court',
-        stateShortName: 'CA',
       }),
     )
 
@@ -25,7 +23,6 @@ describe('Feature: update traffic court', () => {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Orange County Traffic Court',
-        stateShortName: 'CA',
       }),
     ])
   })
@@ -36,7 +33,6 @@ const initialState = {
       TrafficCourtFactory.create({
         _id: '1',
         name: 'Los Angeles Traffic Court',
-        stateShortName: 'CA',
       }),
     ],
   },

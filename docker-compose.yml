@@ -22,7 +22,7 @@ services:
       - .:/app
     depends_on:
       - "${MONGO_SERVICE_NAME:-mongo}"
-    command: /bin/sh -c "if [ \"$SKIP_INIT_DB\" = \"true\" ]; then echo 'Skipping init-db'; else npm run init-db; fi && npm run dev"
+    command: /bin/sh -c "npm run init-db && npm run dev"
 
 volumes:
   mongo-data:

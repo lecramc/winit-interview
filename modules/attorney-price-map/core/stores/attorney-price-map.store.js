@@ -1,11 +1,15 @@
 import { flow, getParent, types } from 'mobx-state-tree'
+import { TrafficCourtModel } from '@/modules/traffic-court/core/stores/traffic-court.store.js'
+import { TrafficCountyModel } from '@/modules/traffic-county/core/stores/traffic-county.store.js'
+import { ViolationModel } from '@/modules/violation/core/stores/violation.store.js'
+import { AttorneyModel } from '@/modules/attorney/core/stores/attorney.store.js'
 
 const AttorneyPriceMapModel = types.model('AttorneyPriceMap', {
   _id: types.identifier,
-  attorney: types.string,
-  court: types.maybeNull(types.string),
-  county: types.maybeNull(types.string),
-  violation: types.maybeNull(types.string),
+  attorney: AttorneyModel,
+  court: types.maybeNull(TrafficCourtModel),
+  county: types.maybeNull(TrafficCountyModel),
+  violation: types.maybeNull(ViolationModel),
   pointsRange: types.array(types.number),
   price: types.number,
 })
@@ -73,6 +77,9 @@ const AttorneyPriceMapStore = types
         self.state = 'rejected'
       }
     }),
+    getPriceMapByAttorneyId(id) {
+      return self.priceMaps.filter((priceMap) => priceMap.attorney._id === id)
+    },
   }))
 
 export default AttorneyPriceMapStore

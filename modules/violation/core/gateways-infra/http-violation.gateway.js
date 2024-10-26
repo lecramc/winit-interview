@@ -2,7 +2,7 @@ import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
 import { ViolationGateway } from '@/modules/violation/core/gateways/violation.gateway.js'
 
-const violationDto = z.object({
+export const violationDto = z.object({
   _id: z.string(),
   name: z.string(),
   points: z.number(),

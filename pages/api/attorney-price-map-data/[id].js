@@ -9,7 +9,14 @@ async function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const priceMap = await AttorneyPriceMap.findById(id).select('-__v')
+      const priceMap = await AttorneyPriceMap.findById(id)
+        .populate('court')
+        .populate('county')
+        .populate('violation')
+        .populate('attorney')
+
+        .select('-__v')
+
       if (!priceMap)
         return res.status(404).json({ success: false, message: 'AttorneyPriceMap not found' })
       res.status(200).json({ success: true, data: priceMap })
@@ -19,7 +26,13 @@ async function handler(req, res) {
       const updatedPriceMap = await AttorneyPriceMap.findByIdAndUpdate(id, req.body, {
         new: true,
         runValidators: true,
-      }).select('-__v')
+      })
+        .populate('attorney')
+
+        .populate('court')
+        .populate('county')
+        .populate('violation')
+        .select('-__v')
       if (!updatedPriceMap)
         return res.status(404).json({ success: false, message: 'AttorneyPriceMap not found' })
       res.status(200).json({ success: true, data: updatedPriceMap })
@@ -27,6 +40,11 @@ async function handler(req, res) {
 
     case 'DELETE':
       const deletedPriceMap = await AttorneyPriceMap.findByIdAndDelete(id)
+        .populate('attorney')
+        .populate('court')
+        .populate('county')
+        .populate('violation')
+        .select('-__v')
       if (!deletedPriceMap)
         return res.status(404).json({ success: false, message: 'AttorneyPriceMap not found' })
       res.status(200).json({ success: true, data: deletedPriceMap })

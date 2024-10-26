@@ -1,6 +1,6 @@
 import { flow, getParent, types } from 'mobx-state-tree'
 
-const TrafficCountyModel = types.model('TrafficCounty', {
+export const TrafficCountyModel = types.model('TrafficCounty', {
   _id: types.identifier,
   name: types.string,
   trafficState: types.string,

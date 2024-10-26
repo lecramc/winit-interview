@@ -14,4 +14,10 @@ export class FakeAuthGateway extends AuthGateway {
     }
     throw new Error('Invalid credentials')
   }
+  async getUser(id) {
+    if (id === 'user-123') {
+      return UserFactory.create({ _id: 'user-123', email: 'user@example.com' })
+    }
+    throw new Error('Invalid credentials')
+  }
 }

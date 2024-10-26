@@ -8,12 +8,24 @@ async function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const priceMaps = await AttorneyPriceMap.find().select('-__v')
+      const priceMaps = await AttorneyPriceMap.find()
+        .populate('attorney')
+
+        .populate('court')
+        .populate('county')
+        .populate('violation')
+        .select('-__v')
       res.status(200).json({ success: true, data: priceMaps })
       break
 
     case 'POST':
-      const priceMap = await AttorneyPriceMap.create(req.body)
+      const newPriceMap = await AttorneyPriceMap.create(req.body)
+      const priceMap = await AttorneyPriceMap.findById(newPriceMap._id)
+        .populate('attorney')
+        .populate('court')
+        .populate('county')
+        .populate('violation')
+        .select('-__v')
       res.status(201).json({ success: true, data: priceMap })
       break
 

@@ -1,22 +1,14 @@
 import React from 'react'
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
-import { loginUsecase } from '@/modules/auth/core/usecases/login.usecase.js'
-import useStore from '@/modules/app/hooks/useStore.js'
 import Link from 'next/link'
 
-function LoginForm() {
-  const store = useStore()
+function LoginForm({ onSubmit }) {
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm()
-
-  const onSubmit = async (data) => {
-    await loginUsecase(data)(store)
-    console.log(store.auth.authState)
-  }
 
   return (
     <Container maxWidth="xs">

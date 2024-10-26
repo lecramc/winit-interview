@@ -6,7 +6,14 @@ import { THEME_TYPES } from '@/constants'
 
 export const createTheme = (palette) => {
   const baseTheme = muiCreateTheme(
-    baseOptions,
+    {
+      ...baseOptions,
+      palette: {
+        primary: {
+          main: '#3f51b5',
+        },
+      },
+    },
     palette === THEME_TYPES.light ? lightThemeOptions : darkThemeOptions,
   )
 

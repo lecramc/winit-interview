@@ -1,6 +1,6 @@
 import { flow, getParent, types } from 'mobx-state-tree'
 
-const ViolationModel = types.model('Violation', {
+export const ViolationModel = types.model('Violation', {
   _id: types.identifier,
   name: types.string,
   points: types.number,

@@ -1,4 +1,3 @@
-// modules/auth/core/usecases/signIn.usecase.test.js
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeAuthGateway } from '@/modules/auth/core/gateways-infra/fake-auth.gateway.js'

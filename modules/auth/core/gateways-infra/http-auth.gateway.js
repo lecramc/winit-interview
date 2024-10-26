@@ -5,12 +5,10 @@ import { z } from 'zod'
 
 const userDto = z.object({
   success: z.boolean(),
-  data: z.object({
-    user: z.object({
-      _id: z.string(),
-      name: z.string(),
-      email: z.string(),
-    }),
+  user: z.object({
+    _id: z.string(),
+    name: z.string(),
+    email: z.string(),
   }),
 })
 export class HttpAuthGateway extends AuthGateway {
@@ -23,7 +21,7 @@ export class HttpAuthGateway extends AuthGateway {
     if (!response.success) {
       throw new Error('Failed to login')
     }
-    return response.data.data
+    return response.data.user
   }
 
   async logout() {
@@ -31,7 +29,7 @@ export class HttpAuthGateway extends AuthGateway {
     return response.data
   }
   async register({ name, email, password }) {
-    const unvalidatedResponse = await axios.post('/auth/register', {
+    const unvalidatedResponse = await axios.post('/auth/user', {
       name,
       email,
       password,
@@ -41,5 +39,13 @@ export class HttpAuthGateway extends AuthGateway {
       throw new Error('Failed to register')
     }
     return result.data.data
+  }
+  async getUser(id) {
+    const unvalidatedResponse = await axios.get(`/auth/user/${id}`)
+    const result = userDto.safeParse(unvalidatedResponse.data)
+    if (!result.success) {
+      throw new Error('Failed to get user')
+    }
+    return result.data.user
   }
 }

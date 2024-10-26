@@ -1,6 +1,6 @@
 import { flow, getParent, types } from 'mobx-state-tree'
 
-const AttorneyModel = types.model('Attorney', {
+export const AttorneyModel = types.model('Attorney', {
   _id: types.identifier,
   name: types.string,
   email: types.string,
@@ -15,6 +15,11 @@ const AttorneyStore = types
     state: types.optional(types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']), 'idle'),
     selectedAttorney: types.maybeNull(AttorneyModel),
   })
+  .views((self) => ({
+    getSelectedAttorney() {
+      return self.selectedAttorney
+    },
+  }))
   .actions((self) => ({
     fetchAttorneys: flow(function* () {
       self.state = 'pending'
@@ -80,6 +85,9 @@ const AttorneyStore = types
         self.state = 'rejected'
       }
     }),
+    cleanSelectedAttorney() {
+      self.selectedAttorney = null
+    },
   }))
 
 export default AttorneyStore

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
 import { TrafficCountyGateway } from '@/modules/traffic-county/core/gateways/traffic-county.gateway.js'
 
-const trafficCountyDto = z.object({
+export const trafficCountyDto = z.object({
   _id: z.string(),
   name: z.string(),
   trafficState: z.string(),

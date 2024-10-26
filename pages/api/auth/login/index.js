@@ -1,38 +1,43 @@
 import cookie from 'cookie'
-import { loginService } from '@/modules/app/services/loginService.js'
-import dbConnect from '@/modules/app/utils/dbConnect.js'
+import { loginService } from '@/modules/app/services/loginService'
+import dbConnect from '@/modules/app/utils/dbConnect'
+import { withErrorHandling } from '@/modules/app/utils/errorMiddleware'
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
-  }
+async function handler(req, res) {
+  const { method } = req
+
   await dbConnect()
-  try {
-    const { email, password } = req.body
-    const { user, token } = await loginService(email, password)
 
-    res.setHeader(
-      'Set-Cookie',
-      cookie.serialize('authToken', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60 * 24, // 1 jour
-        sameSite: 'strict',
-        path: '/',
-      }),
-    )
+  switch (method) {
+    case 'POST':
+      const { email, password } = req.body
 
-    res.status(200).json({
-      success: true,
-      data: {
+      const { user, token } = await loginService(email, password)
+
+      res.setHeader(
+        'Set-Cookie',
+        cookie.serialize('authToken', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 60 * 60 * 24, // 1 jour
+          sameSite: 'strict',
+          path: '/',
+        }),
+      )
+
+      return res.status(200).json({
+        success: true,
+
         user: {
           _id: user._id,
           email: user.email,
           name: user.name,
         },
-      },
-    })
-  } catch (error) {
-    res.status(401).json({ error: error.message || 'Invalid credentials' })
+      })
+
+    default:
+      return res.status(405).json({ success: false, message: `Method ${method} not allowed` })
   }
 }
+
+export default withErrorHandling(handler)

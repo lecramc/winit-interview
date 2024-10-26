@@ -16,7 +16,7 @@ const AppStore = types
     trafficCounty: types.optional(TrafficCountyStore, { trafficCounties: [] }),
     trafficCourt: types.optional(TrafficCourtStore, { trafficCourts: [] }),
     trafficState: types.optional(TrafficStateStore, { trafficStates: [] }),
-    auth: types.optional(AuthStore, { user: {} }),
+    auth: types.optional(AuthStore, {}),
     theme: types.optional(ThemeStore, {}),
   })
   .actions((self) => ({

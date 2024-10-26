@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { AttorneyGateway } from '@/modules/attorney/core/gateways/attorney.gateway.js'
 import axios from '@/modules/app/axios.js'
 
-const attorneyDto = z.object({
+export const attorneyDto = z.object({
   _id: z.string(),
   name: z.string(),
   email: z.string(),

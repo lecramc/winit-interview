@@ -3,6 +3,11 @@ import createTestStore from '@/modules/app/stores/TestStore'
 import { HttpAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/http-attorney-price-map.gateway.js'
 import mongoose from 'mongoose'
 import { beforeEachConfig } from '@/modules/app/utils/beforEachConfig.js'
+import { createAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/create-attorney-price-map.usecase.js'
+import { getAttorneyPriceMapsUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-maps.usecase.js'
+import { updateAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/update-attorney-price-map.usecase.js'
+import { deleteAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/delete-attorney-price-map.usecase.js'
+import { getAttorneyPriceMapByIdUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-map-by-id.usecase.js'
 
 let store
 
@@ -13,7 +18,7 @@ beforeEach(async () => {
   store = createTestStore({
     dependencies: { attorneyPriceMapGateway: gateway },
   })
-  await store.attorneyPriceMap.fetchAttorneyPriceMaps()
+  await getAttorneyPriceMapsUsecase()(store)
 })
 
 describe('Integration Test: API with Test DB for AttorneyPriceMap', () => {
@@ -24,12 +29,12 @@ describe('Integration Test: API with Test DB for AttorneyPriceMap', () => {
       price: 400,
       pointsRange: [1, 4],
     }
-    await store.attorneyPriceMap.createAttorneyPriceMap(newPriceMap)
+    await createAttorneyPriceMapUsecase(newPriceMap)(store)
     expect(store.attorneyPriceMap.state).toBe('fulfilled')
   })
 
   test('Get PriceMaps', async () => {
-    await store.attorneyPriceMap.fetchAttorneyPriceMaps()
+    await getAttorneyPriceMapsUsecase()(store)
     expect(store.attorneyPriceMap.state).toBe('fulfilled')
   })
 
@@ -39,21 +44,21 @@ describe('Integration Test: API with Test DB for AttorneyPriceMap', () => {
       ...priceMapToUpdate,
       price: 500,
     }
-    await store.attorneyPriceMap.updateAttorneyPriceMap(updatedData)
+    await updateAttorneyPriceMapUsecase(updatedData)(store)
     expect(store.attorneyPriceMap.state).toBe('fulfilled')
   })
 
   test('Delete PriceMap', async () => {
     const priceMapToDelete = store.attorneyPriceMap.priceMaps[1]
 
-    await store.attorneyPriceMap.deleteAttorneyPriceMap(priceMapToDelete._id)
+    await deleteAttorneyPriceMapUsecase(priceMapToDelete._id)(store)
     expect(store.attorneyPriceMap.state).toBe('fulfilled')
   })
 
   test('Get PriceMap by ID', async () => {
     const priceMapId = store.attorneyPriceMap.priceMaps[0]._id
 
-    await store.attorneyPriceMap.getAttorneyPriceMapById(priceMapId)
+    await getAttorneyPriceMapByIdUsecase(priceMapId)(store)
     expect(store.attorneyPriceMap.state).toBe('fulfilled')
   })
 })

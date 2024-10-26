@@ -1,13 +1,17 @@
 import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
 import { AttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways/attorney-price-map.gateway.js'
+import { violationDto } from '@/modules/violation/core/gateways-infra/http-violation.gateway.js'
+import { trafficCourtDto } from '@/modules/traffic-court/core/gateways-infra/http-traffic-court.gateway.js'
+import { trafficCountyDto } from '@/modules/traffic-county/core/gateways-infra/http-traffic-county.gateway.js'
+import { attorneyDto } from '@/modules/attorney/core/gateways-infra/http-attorney.gateway.js'
 
 const attorneyPriceMapDto = z.object({
   _id: z.string(),
-  attorney: z.string(),
-  court: z.string().optional().nullable(),
-  county: z.string().optional().nullable(),
-  violation: z.string().optional().nullable(),
+  attorney: attorneyDto,
+  court: trafficCourtDto.optional().nullable(),
+  county: trafficCountyDto.optional().nullable(),
+  violation: violationDto.optional().nullable(),
   pointsRange: z.array(z.number()).optional().nullable(),
   price: z.number(),
 })

@@ -153,7 +153,12 @@ export const seedDatabase = async () => {
       price: 320,
     },
   ])
-  await User.create({ email: 'user@example.com', name: 'user', password: 'password123' })
+  await User.create({
+    _id: '671cdfc38b522c2b91e7d91e',
+    email: 'user@example.com',
+    name: 'user',
+    password: 'password123',
+  })
 
   console.log('Seeding completed')
 }

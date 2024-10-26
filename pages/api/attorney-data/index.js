@@ -1,6 +1,7 @@
 import dbConnect from '@/modules/app/utils/dbConnect'
 import Attorney from '@/db/mongo/schemas/Attorney'
 import { withErrorHandling } from '@/modules/app/utils/errorMiddleware'
+import mongoose from 'mongoose'
 
 async function handler(req, res) {
   const { method } = req
@@ -13,7 +14,11 @@ async function handler(req, res) {
       break
 
     case 'POST':
-      const attorney = await Attorney.create(req.body)
+      const data = {
+        ...req.body,
+        _id: req.body._id || new mongoose.Types.ObjectId(),
+      }
+      const attorney = await Attorney.create(data)
       res.status(201).json({ success: true, data: attorney })
       break
 

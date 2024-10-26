@@ -1,6 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const AttorneySchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
+  },
   name: {
     type: String,
     required: [true, 'Please provide a name for this attorney.'],
@@ -20,6 +24,6 @@ const AttorneySchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-});
+})
 
-export default mongoose.models.Attorney || mongoose.model('Attorney', AttorneySchema);
+export default mongoose.models.Attorney || mongoose.model('Attorney', AttorneySchema)

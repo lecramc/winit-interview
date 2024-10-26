@@ -10,8 +10,7 @@ export default async function handler(req, res) {
   try {
     const { email, password } = req.body
     const { user, token } = await loginService(email, password)
-    console.log('User' + user)
-    console.log('Token' + token)
+
     res.setHeader(
       'Set-Cookie',
       cookie.serialize('authToken', token, {

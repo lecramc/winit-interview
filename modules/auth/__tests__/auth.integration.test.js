@@ -22,4 +22,15 @@ describe('Integration test: login via auth API', () => {
 
     expect(store.auth.authState).toBe('fulfilled')
   })
+  test('register user and updates store state to fulfilled', async () => {
+    const newUser = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: 'SecureP@ss123',
+    }
+
+    await store.auth.register(newUser)
+
+    expect(store.auth.registrationState).toBe('fulfilled')
+  })
 })

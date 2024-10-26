@@ -7,6 +7,10 @@ export const AuthStore = types
       types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']),
       'idle',
     ),
+    registrationState: types.optional(
+      types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']),
+      'idle',
+    ),
   })
   .actions((self) => ({
     login: flow(function* ({ email, password }) {
@@ -34,6 +38,17 @@ export const AuthStore = types
       } catch (error) {
         self.authState = 'rejected'
         console.error('Logout failed:', error)
+      }
+    }),
+    register: flow(function* ({ name, email, password }) {
+      self.registrationState = 'pending'
+      try {
+        const authGateway = getParent(self).dependencies.authGateway
+        yield authGateway.register({ name, email, password })
+        self.registrationState = 'fulfilled'
+      } catch (error) {
+        self.registrationState = 'rejected'
+        console.error('Register failed:', error)
       }
     }),
   }))

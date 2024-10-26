@@ -6,4 +6,8 @@ export class AuthGateway {
   async logout() {
     throw new Error('Method not implemented')
   }
+
+  async register({ name, email, password }) {
+    throw new Error('Method not implemented')
+  }
 }

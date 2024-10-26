@@ -3,7 +3,7 @@ import { AuthGateway } from '@/modules/auth/core/gateways/auth.gateway.js'
 
 import { z } from 'zod'
 
-const loginDto = z.object({
+const userDto = z.object({
   success: z.boolean(),
   data: z.object({
     user: z.object({
@@ -19,7 +19,7 @@ export class HttpAuthGateway extends AuthGateway {
       email,
       password,
     })
-    const response = loginDto.safeParse(unvalidatedResponse.data)
+    const response = userDto.safeParse(unvalidatedResponse.data)
     if (!response.success) {
       throw new Error('Failed to login')
     }
@@ -27,7 +27,19 @@ export class HttpAuthGateway extends AuthGateway {
   }
 
   async logout() {
-    const response = await axios.post('/api/auth/logout')
+    const response = await axios.post('/auth/logout')
     return response.data
+  }
+  async register({ name, email, password }) {
+    const unvalidatedResponse = await axios.post('/auth/register', {
+      name,
+      email,
+      password,
+    })
+    const result = userDto.safeParse(unvalidatedResponse.data)
+    if (!result.success) {
+      throw new Error('Failed to register')
+    }
+    return result.data.data
   }
 }

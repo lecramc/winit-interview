@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficCourtGateway } from '@/modules/traffic-court/core/gateways-infra/fake-traffic-court.gateway.js'
 import { TrafficCourtFactory } from '@/modules/traffic-court/core/entities/traffic-court.factory.js'
+import { getTrafficCourtByIdUsecase } from '@/modules/traffic-court/core/usecases/get-traffic-court-by-id.usecase.js'
 
 describe('Feature: retrieve traffic court by ID', () => {
   test('User retrieves a traffic court by ID', async () => {
@@ -42,7 +43,7 @@ function givenPreviouslyCreatedTrafficCourts(previousTrafficCourts = []) {
 }
 
 async function whenRetrievingTrafficCourtById(id) {
-  await store.trafficCourt.getTrafficCourtById(id)
+  await getTrafficCourtByIdUsecase(id)(store)
 }
 
 function thenIShouldHaveTrafficCourtInStore(expectedCourt) {

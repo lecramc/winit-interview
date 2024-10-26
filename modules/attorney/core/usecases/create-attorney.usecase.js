@@ -1,3 +1,3 @@
-export const createAttorney = async ({ newAttorneyData, attorneyGateway }) => {
-  return await attorneyGateway.createAttorney(newAttorneyData)
+export const createAttorneyUsecase = (newAttorneyData) => async (store) => {
+  await store.attorney.createAttorney(newAttorneyData)
 }

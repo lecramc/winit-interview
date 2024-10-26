@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeViolationGateway } from '@/modules/violation/core/gateways-infra/fake-violation.gateway.js'
 import { ViolationFactory } from '@/modules/violation/core/entities/violation.factory.js'
+import { deleteViolationUsecase } from '@/modules/violation/core/usecases/delete-violation.usecase.js'
 
 describe('Feature: delete violation', () => {
   test('User deletes a violation', async () => {
@@ -24,9 +25,8 @@ function givenPreviouslyCreatedViolations(previousViolations = []) {
 }
 
 async function whenDeletingViolation(id) {
-  await store.violation.deleteViolation(id)
+  await deleteViolationUsecase(id)(store)
 }
-
 function thenViolationShouldBeDeleted(id) {
   expect(violationGateway.violations).not.toContainEqual(expect.objectContaining({ _id: id }))
 }

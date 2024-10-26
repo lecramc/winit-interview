@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory.js'
 import { FakeAttorneyGateway } from '@/modules/attorney/core/gateways-infra/fake-attorney.gateway.js'
+import { getAttorneysUsecase } from '@/modules/attorney/core/usecases/get-attorneys.usecase.js'
 
 describe('Feature: retrieve attorneys', () => {
   test('User retrieves all created attorneys', async () => {
@@ -27,7 +28,7 @@ function givenPreviouslyCreatedAttorneys(previousAttorneys = []) {
 }
 
 async function whenRetrievingAllAttorneys() {
-  await store.attorney.fetchAttorneys()
+  await getAttorneysUsecase()(store)
 }
 
 function thenIShouldHaveAllAttorneys(expectedAttorneys = []) {

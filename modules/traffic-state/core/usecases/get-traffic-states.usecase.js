@@ -1,3 +1,3 @@
-export const getTrafficStates = async (gateway) => {
-  return await gateway.getTrafficStates()
+export const getTrafficStatesUsecase = () => async (store) => {
+  await store.trafficState.fetchTrafficStates()
 }

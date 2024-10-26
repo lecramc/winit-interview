@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory.js'
 import { FakeAttorneyGateway } from '@/modules/attorney/core/gateways-infra/fake-attorney.gateway.js'
+import { deleteAttorneyUsecase } from '@/modules/attorney/core/usecases/delete-attorney.usecase.js'
 
 describe('Feature: delete attorney', () => {
   test('User delete an existing attorney', async () => {
@@ -38,7 +39,7 @@ function givenPreviouslyCreatedAttorneys(previousAttorneys = []) {
 }
 
 async function whenDeletingAttorney(id) {
-  await store.attorney.deleteAttorney(id)
+  await deleteAttorneyUsecase(id)(store)
 }
 
 function thenAttorneyShouldBeDeleted(expectedAttorneys = []) {

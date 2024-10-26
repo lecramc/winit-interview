@@ -4,7 +4,7 @@ export class TrafficCountyFactory {
       _id: '',
       name: '',
       trafficState: '',
-      stateShortName: '',
+      enabled: true,
       ...data,
     }
   }

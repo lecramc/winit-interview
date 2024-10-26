@@ -1,3 +1,3 @@
-export const deleteAttorney = async ({ id, attorneyGateway }) => {
-  return await attorneyGateway.deleteAttorney(id)
+export const deleteAttorneyUsecase = (id) => async (store) => {
+  await store.attorney.deleteAttorney(id)
 }

@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficCourtGateway } from '@/modules/traffic-court/core/gateways-infra/fake-traffic-court.gateway.js'
 import { TrafficCourtFactory } from '@/modules/traffic-court/core/entities/traffic-court.factory.js'
+import { updateTrafficCourtUsecase } from '@/modules/traffic-court/core/usecases/update-traffic-court.usecase.js'
 
 describe('Feature: update traffic court', () => {
   test('User updates an existing traffic court', async () => {
@@ -45,7 +46,7 @@ function givenPreviouslyCreatedTrafficCourts(previousTrafficCourts = []) {
 }
 
 async function whenUpdatingTrafficCourt(updatedData) {
-  await store.trafficCourt.updateTrafficCourt(updatedData)
+  await updateTrafficCourtUsecase(updatedData)(store)
 }
 
 function thenTrafficCourtShouldBeUpdated(expectedTrafficCourt) {

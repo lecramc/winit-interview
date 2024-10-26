@@ -1,3 +1,3 @@
-export const getAttorneyById = async ({ id, attorneyGateway }) => {
-  return await attorneyGateway.getAttorneyById(id)
+export const getAttorneyByIdUsecase = (id) => async (store) => {
+  await store.attorney.getAttorneyById(id)
 }

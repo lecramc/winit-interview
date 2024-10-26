@@ -1,3 +1,3 @@
-export const updateTrafficCounty = async (gateway, data) => {
-  return await gateway.updateTrafficCounty(data)
+export const updateTrafficCountyUsecase = (data) => async (store) => {
+  await store.trafficCounty.updateTrafficCounty(data)
 }

@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficStateGateway } from '@/modules/traffic-state/core/gateways-infra/fake-traffic-state.gateway.js'
 import { TrafficStateFactory } from '@/modules/traffic-state/core/entities/traffic-state.factory.js'
+import { deleteTrafficStateUsecase } from '@/modules/traffic-state/core/usecases/delete-traffic-state.usecase.js'
 
 describe('Feature: delete traffic state', () => {
   test('User deletes a traffic state', async () => {
@@ -33,7 +34,7 @@ function givenPreviouslyCreatedTrafficStates(previousTrafficStates = []) {
 }
 
 async function whenDeletingTrafficState(id) {
-  await store.trafficState.deleteTrafficState(id)
+  await deleteTrafficStateUsecase(id)(store)
 }
 
 function thenTrafficStateShouldBeDeleted(expectedTrafficStates) {

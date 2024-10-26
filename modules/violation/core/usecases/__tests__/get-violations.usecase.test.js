@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeViolationGateway } from '@/modules/violation/core/gateways-infra/fake-violation.gateway.js'
 import { ViolationFactory } from '@/modules/violation/core/entities/violation.factory.js'
+import { getViolationsUsecase } from '@/modules/violation/core/usecases/get-violations.usecase.js'
 
 describe('Feature: retrieve violations', () => {
   test('User retrieves all violations', async () => {
@@ -27,7 +28,7 @@ function givenPreviouslyCreatedViolations(previousViolations = []) {
 }
 
 async function whenRetrievingAllViolations() {
-  await store.violation.fetchViolations()
+  await getViolationsUsecase()(store)
 }
 
 function thenIShouldHaveAllViolations(expectedViolations = []) {

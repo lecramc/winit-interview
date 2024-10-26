@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/fake-attorney-price-map.gateway.js'
 import { AttorneyPriceMapFactory } from '@/modules/attorney-price-map/core/entities/attorney-price-map.factory.js'
+import { deleteAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/delete-attorney-price-map.usecase.js'
 
 describe('Feature: delete attorney price map', () => {
   test('User deletes an attorney price map', async () => {
@@ -36,7 +37,7 @@ function givenPreviouslyCreatedPriceMaps(previousPriceMaps = []) {
 }
 
 async function whenDeletingPriceMap(id) {
-  await store.attorneyPriceMap.deleteAttorneyPriceMap(id)
+  await deleteAttorneyPriceMapUsecase(id)(store)
 }
 
 function thenPriceMapShouldBeDeleted(expectedPriceMaps) {

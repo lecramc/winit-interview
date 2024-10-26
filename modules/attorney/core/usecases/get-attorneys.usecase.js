@@ -1,3 +1,3 @@
-export const getAttorneys = async (attorneyGateway) => {
-  return await attorneyGateway.getAttorneys()
+export const getAttorneysUsecase = () => async (store) => {
+  await store.attorney.fetchAttorneys()
 }

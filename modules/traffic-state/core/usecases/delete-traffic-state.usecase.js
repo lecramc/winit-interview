@@ -1,3 +1,3 @@
-export const deleteTrafficState = async (gateway, id) => {
-  return await gateway.deleteTrafficState(id)
+export const deleteTrafficStateUsecase = (id) => async (store) => {
+  await store.trafficState.deleteTrafficState(id)
 }

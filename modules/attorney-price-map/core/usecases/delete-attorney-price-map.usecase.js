@@ -1,3 +1,3 @@
-export const deleteAttorneyPriceMap = async ({ id, attorneyPriceMapGateway }) => {
-  return await attorneyPriceMapGateway.deleteAttorneyPriceMap(id)
+export const deleteAttorneyPriceMapUsecase = (id) => async (store) => {
+  await store.attorneyPriceMap.deleteAttorneyPriceMap(id)
 }

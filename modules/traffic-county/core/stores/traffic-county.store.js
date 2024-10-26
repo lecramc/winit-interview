@@ -1,15 +1,10 @@
 import { flow, getParent, types } from 'mobx-state-tree'
-import { getTrafficCountyById } from '@/modules/traffic-county/core/usecases/get-traffic-county-by-id.usecase.js'
-import { getTrafficCounties } from '@/modules/traffic-county/core/usecases/get-traffic-counties.usecase.js'
-import { updateTrafficCounty } from '@/modules/traffic-county/core/usecases/update-traffic-county.usecase.js'
-import { deleteTrafficCounty } from '@/modules/traffic-county/core/usecases/delete-traffic-county.usecase.js'
-import { createTrafficCounty } from '@/modules/traffic-county/core/usecases/create-traffic-county.usecase.js'
 
 const TrafficCountyModel = types.model('TrafficCounty', {
   _id: types.identifier,
   name: types.string,
   trafficState: types.string,
-  enable: types.optional(types.boolean, true),
+  enabled: types.optional(types.boolean, true),
 })
 
 const TrafficCountyStore = types
@@ -23,7 +18,7 @@ const TrafficCountyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.trafficCountyGateway
-        self.trafficCounties = yield getTrafficCounties(gateway)
+        self.trafficCounties = yield gateway.getTrafficCounties()
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'
@@ -33,7 +28,7 @@ const TrafficCountyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.trafficCountyGateway
-        const county = yield getTrafficCountyById(gateway, id)
+        const county = yield gateway.getTrafficCountyById(id)
         self.selectedTrafficCounty = county
         self.state = 'fulfilled'
       } catch (error) {
@@ -44,7 +39,7 @@ const TrafficCountyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.trafficCountyGateway
-        const newCounty = yield createTrafficCounty(gateway, data)
+        const newCounty = yield gateway.createTrafficCounty(data)
         self.trafficCounties.push(newCounty)
         self.state = 'fulfilled'
       } catch (error) {
@@ -55,7 +50,7 @@ const TrafficCountyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.trafficCountyGateway
-        const updatedCounty = yield updateTrafficCounty(gateway, data)
+        const updatedCounty = yield gateway.updateTrafficCounty(data)
         const index = self.trafficCounties.findIndex((county) => county._id === updatedCounty._id)
         if (index !== -1) {
           self.trafficCounties[index] = updatedCounty
@@ -69,7 +64,7 @@ const TrafficCountyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.trafficCountyGateway
-        yield deleteTrafficCounty(gateway, id)
+        yield gateway.deleteTrafficCounty(id)
         self.trafficCounties = self.trafficCounties.filter((county) => county._id !== id)
         self.state = 'fulfilled'
       } catch (error) {

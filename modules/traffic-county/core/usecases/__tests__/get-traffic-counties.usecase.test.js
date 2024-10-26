@@ -2,19 +2,20 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficCountyGateway } from '@/modules/traffic-county/core/gateways-infra/fake-traffic-county.gateway.js'
 import { TrafficCountyFactory } from '@/modules/traffic-county/core/entities/traffic-county.factory.js'
+import { getTrafficCountiesUsecase } from '@/modules/traffic-county/core/usecases/get-traffic-counties.usecase.js'
 
 describe('Feature: retrieve traffic counties', () => {
   test('User retrieves all traffic counties', async () => {
     givenPreviouslyCreatedTrafficCounties([
-      TrafficCountyFactory.create({ _id: '1', name: 'Los Angeles', stateShortName: 'CA' }),
-      TrafficCountyFactory.create({ _id: '2', name: 'Harris', stateShortName: 'TX' }),
+      TrafficCountyFactory.create({ _id: '1', name: 'Los Angeles' }),
+      TrafficCountyFactory.create({ _id: '2', name: 'Harris' }),
     ])
 
     await whenRetrievingAllTrafficCounties()
 
     thenIShouldHaveAllTrafficCounties([
-      TrafficCountyFactory.create({ _id: '1', name: 'Los Angeles', stateShortName: 'CA' }),
-      TrafficCountyFactory.create({ _id: '2', name: 'Harris', stateShortName: 'TX' }),
+      TrafficCountyFactory.create({ _id: '1', name: 'Los Angeles' }),
+      TrafficCountyFactory.create({ _id: '2', name: 'Harris' }),
     ])
   })
 })
@@ -27,7 +28,7 @@ function givenPreviouslyCreatedTrafficCounties(previousTrafficCounties = []) {
 }
 
 async function whenRetrievingAllTrafficCounties() {
-  await store.trafficCounty.fetchTrafficCounties()
+  await getTrafficCountiesUsecase()(store)
 }
 
 function thenIShouldHaveAllTrafficCounties(expectedTrafficCounties = []) {

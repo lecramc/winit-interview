@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/fake-attorney-price-map.gateway.js'
 import { AttorneyPriceMapFactory } from '@/modules/attorney-price-map/core/entities/attorney-price-map.factory.js'
+import { getAttorneyPriceMapByIdUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-map-by-id.usecase.js'
 
 describe('Feature: retrieve attorney price map by id', () => {
   test('User retrieves an attorney price map by ID', async () => {
@@ -28,7 +29,7 @@ function givenExistingPriceMaps(existingPriceMaps = []) {
 }
 
 async function whenRetrievingPriceMapById(id) {
-  await store.attorneyPriceMap.getAttorneyPriceMapById(id)
+  await getAttorneyPriceMapByIdUsecase(id)(store)
 }
 
 function thenIShouldHavePriceMapInStore(expectedPriceMap) {

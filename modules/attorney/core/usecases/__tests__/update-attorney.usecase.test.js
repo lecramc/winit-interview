@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory.js'
 import { FakeAttorneyGateway } from '@/modules/attorney/core/gateways-infra/fake-attorney.gateway.js'
+import { updateAttorneyUsecase } from '@/modules/attorney/core/usecases/update-attorney.usecase.js'
 
 describe('Feature: update attorney', () => {
   test('User updates an existing attorney', async () => {
@@ -46,7 +47,7 @@ function givenPreviouslyCreatedAttorneys(previousAttorneys = []) {
 }
 
 async function whenUpdatingAttorney(updatedAttorneyData) {
-  await store.attorney.updateAttorney(updatedAttorneyData)
+  await updateAttorneyUsecase(updatedAttorneyData)(store)
 }
 
 function thenAttorneyShouldBeUpdated(expectedAttorney) {

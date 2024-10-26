@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/fake-attorney-price-map.gateway.js'
 import { AttorneyPriceMapFactory } from '@/modules/attorney-price-map/core/entities/attorney-price-map.factory.js'
+import { updateAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/update-attorney-price-map.usecase.js'
 
 describe('Feature: update attorney price map', () => {
   test('User updates an existing attorney price map', async () => {
@@ -38,7 +39,7 @@ function givenPreviouslyCreatedPriceMaps(previousPriceMaps = []) {
 }
 
 async function whenUpdatingPriceMap(updatedData) {
-  await store.attorneyPriceMap.updateAttorneyPriceMap(updatedData)
+  await updateAttorneyPriceMapUsecase(updatedData)(store)
 }
 
 function thenPriceMapShouldBeUpdated(updatedData) {

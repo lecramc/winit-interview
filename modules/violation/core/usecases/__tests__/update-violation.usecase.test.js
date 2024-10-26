@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeViolationGateway } from '@/modules/violation/core/gateways-infra/fake-violation.gateway.js'
 import { ViolationFactory } from '@/modules/violation/core/entities/violation.factory.js'
+import { updateViolationUsecase } from '@/modules/violation/core/usecases/update-violation.usecase.js'
 
 describe('Feature: update violation', () => {
   test('User updates an existing violation', async () => {
@@ -31,7 +32,7 @@ function givenPreviouslyCreatedViolations(previousViolations = []) {
 }
 
 async function whenUpdatingViolation(updatedData) {
-  await store.violation.updateViolation(updatedData)
+  await updateViolationUsecase(updatedData)(store)
 }
 
 function thenViolationShouldBeUpdated(updatedData) {

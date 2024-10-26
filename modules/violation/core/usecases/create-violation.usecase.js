@@ -1,3 +1,3 @@
-export const createViolation = async (data, gateway) => {
-  return await gateway.createViolation(data)
+export const createViolationUsecase = (data) => async (store) => {
+  return await store.violation.createViolation(data)
 }

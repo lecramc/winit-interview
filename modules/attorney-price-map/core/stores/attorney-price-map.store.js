@@ -1,9 +1,4 @@
 import { flow, getParent, types } from 'mobx-state-tree'
-import { deleteAttorneyPriceMap } from '@/modules/attorney-price-map/core/usecases/delete-attorney-price-map.usecase.js'
-import { getAttorneyPriceMaps } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-maps.usecase.js'
-import { getAttorneyPriceMapById } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-map-by-id.usecase.js'
-import { updateAttorneyPriceMap } from '@/modules/attorney-price-map/core/usecases/update-attorney-price-map.usecase.js'
-import { createAttorneyPriceMap } from '@/modules/attorney-price-map/core/usecases/create-attorney-price-map.usecase.js'
 
 const AttorneyPriceMapModel = types.model('AttorneyPriceMap', {
   _id: types.identifier,
@@ -26,7 +21,7 @@ const AttorneyPriceMapStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyPriceMapGateway
-        self.priceMaps = yield getAttorneyPriceMaps(gateway)
+        self.priceMaps = yield gateway.getAttorneyPriceMaps()
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'
@@ -36,10 +31,7 @@ const AttorneyPriceMapStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyPriceMapGateway
-        self.selectedPriceMap = yield getAttorneyPriceMapById({
-          id,
-          attorneyPriceMapGateway: gateway,
-        })
+        self.selectedPriceMap = yield gateway.getAttorneyPriceMapById(id)
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'
@@ -49,10 +41,7 @@ const AttorneyPriceMapStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyPriceMapGateway
-        const newPriceMap = yield createAttorneyPriceMap({
-          newAttorneyData: data,
-          attorneyPriceMapGateway: gateway,
-        })
+        const newPriceMap = yield gateway.createAttorneyPriceMap(data)
         self.priceMaps.push(newPriceMap)
         self.state = 'fulfilled'
       } catch (error) {
@@ -63,10 +52,7 @@ const AttorneyPriceMapStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyPriceMapGateway
-        const updatedPriceMap = yield updateAttorneyPriceMap({
-          updatedAttorneyData: dataToUpdate,
-          attorneyPriceMapGateway: gateway,
-        })
+        const updatedPriceMap = yield gateway.updateAttorneyPriceMap(dataToUpdate)
         const index = self.priceMaps.findIndex((priceMap) => priceMap._id === dataToUpdate._id)
         if (index !== -1) {
           self.priceMaps[index] = updatedPriceMap
@@ -80,7 +66,7 @@ const AttorneyPriceMapStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyPriceMapGateway
-        yield deleteAttorneyPriceMap({ id, attorneyPriceMapGateway: gateway })
+        yield gateway.deleteAttorneyPriceMap(id)
         self.priceMaps = self.priceMaps.filter((priceMap) => priceMap._id !== id)
         self.state = 'fulfilled'
       } catch (error) {

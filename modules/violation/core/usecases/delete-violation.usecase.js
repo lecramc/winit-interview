@@ -1,3 +1,3 @@
-export const deleteViolation = async (id, gateway) => {
-  return await gateway.deleteViolation(id)
+export const deleteViolationUsecase = (id) => async (store) => {
+  await store.violation.deleteViolation(id)
 }

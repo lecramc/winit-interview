@@ -1,3 +1,3 @@
-export const getViolations = async (gateway) => {
-  return await gateway.getViolations()
+export const getViolationsUsecase = () => async (store) => {
+  await store.violation.fetchViolations()
 }

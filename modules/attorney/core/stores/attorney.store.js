@@ -1,9 +1,4 @@
 import { flow, getParent, types } from 'mobx-state-tree'
-import { getAttorneys } from '@/modules/attorney/core/usecases/get-attorneys.usecase.js'
-import { getAttorneyById } from '@/modules/attorney/core/usecases/get-attorney-by-id.usecase.js'
-import { createAttorney } from '@/modules/attorney/core/usecases/create-attorney.usecase.js'
-import { deleteAttorney } from '@/modules/attorney/core/usecases/delete-attorney.usecase.js'
-import { updateAttorney } from '@/modules/attorney/core/usecases/update-attorney.usecase.js'
 
 const AttorneyModel = types.model('Attorney', {
   _id: types.identifier,
@@ -25,7 +20,7 @@ const AttorneyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyGateway
-        self.attorneys = yield getAttorneys(gateway)
+        self.attorneys = yield gateway.getAttorneys()
         self.state = 'fulfilled'
       } catch (error) {
         console.log(error)
@@ -37,7 +32,7 @@ const AttorneyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyGateway
-        self.selectedAttorney = yield getAttorneyById({ id, attorneyGateway: gateway })
+        self.selectedAttorney = yield gateway.getAttorneyById(id)
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'
@@ -48,7 +43,7 @@ const AttorneyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyGateway
-        const createdAttorney = yield createAttorney({ newAttorneyData, attorneyGateway: gateway })
+        const createdAttorney = yield gateway.createAttorney(newAttorneyData)
         self.attorneys.push(createdAttorney)
         self.state = 'fulfilled'
       } catch (error) {
@@ -60,10 +55,8 @@ const AttorneyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyGateway
-        const updatedAttorney = yield updateAttorney({
-          updatedAttorneyData,
-          attorneyGateway: gateway,
-        })
+        const updatedAttorney = yield gateway.updateAttorney(updatedAttorneyData)
+
         const index = self.attorneys.findIndex(
           (attorney) => attorney._id === updatedAttorneyData._id,
         )
@@ -80,7 +73,7 @@ const AttorneyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.attorneyGateway
-        yield deleteAttorney({ id, attorneyGateway: gateway })
+        yield gateway.deleteAttorney(id)
         self.attorneys = self.attorneys.filter((attorney) => attorney._id !== id)
         self.state = 'fulfilled'
       } catch (error) {

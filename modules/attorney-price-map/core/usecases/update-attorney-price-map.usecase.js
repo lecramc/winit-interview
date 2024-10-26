@@ -1,3 +1,3 @@
-export const updateAttorneyPriceMap = async ({ updatedAttorneyData, attorneyPriceMapGateway }) => {
-  return await attorneyPriceMapGateway.updateAttorneyPriceMap(updatedAttorneyData)
+export const updateAttorneyPriceMapUsecase = (updatedAttorneyData) => async (store) => {
+  await store.attorneyPriceMap.updateAttorneyPriceMap(updatedAttorneyData)
 }

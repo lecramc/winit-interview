@@ -1,3 +1,3 @@
-export const getTrafficCourtById = async (gateway, id) => {
-  return await gateway.getTrafficCourtById(id)
+export const getTrafficCourtByIdUsecase = (id) => async (store) => {
+  return await store.trafficCourt.getTrafficCourtById(id)
 }

@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/fake-attorney-price-map.gateway.js'
 import { AttorneyPriceMapFactory } from '@/modules/attorney-price-map/core/entities/attorney-price-map.factory.js'
+import { getAttorneyPriceMapsUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-maps.usecase.js'
 
 describe('Feature: retrieve attorney price maps', () => {
   test('User retrieves all attorney price maps', async () => {
@@ -51,7 +52,7 @@ function givenPreviouslyCreatedPriceMaps(previousPriceMaps = []) {
 }
 
 async function whenRetrievingAllPriceMaps() {
-  await store.attorneyPriceMap.fetchAttorneyPriceMaps()
+  await getAttorneyPriceMapsUsecase()(store)
 }
 
 function thenIShouldHaveAllPriceMaps(expectedPriceMaps = []) {

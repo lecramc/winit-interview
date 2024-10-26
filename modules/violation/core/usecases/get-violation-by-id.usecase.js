@@ -1,3 +1,3 @@
-export const getViolationById = async (id, gateway) => {
-  return await gateway.getViolationById(id)
+export const getViolationByIdUsecase = (id) => async (store) => {
+  await store.violation.getViolationById(id)
 }

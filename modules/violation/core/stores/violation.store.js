@@ -1,9 +1,4 @@
 import { flow, getParent, types } from 'mobx-state-tree'
-import { deleteViolation } from '@/modules/violation/core/usecases/delete-violation.usecase.js'
-import { updateViolation } from '@/modules/violation/core/usecases/update-violation.usecase.js'
-import { createViolation } from '@/modules/violation/core/usecases/create-violation.usecase.js'
-import { getViolationById } from '@/modules/violation/core/usecases/get-violation-by-id.usecase.js'
-import { getViolations } from '@/modules/violation/core/usecases/get-violations.usecase.js'
 
 const ViolationModel = types.model('Violation', {
   _id: types.identifier,
@@ -22,7 +17,7 @@ const ViolationStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.violationGateway
-        self.violations = yield getViolations(gateway)
+        self.violations = yield gateway.getViolations()
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'
@@ -32,7 +27,7 @@ const ViolationStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.violationGateway
-        self.selectedViolation = yield getViolationById(id, gateway)
+        self.selectedViolation = yield gateway.getViolationById(id)
         self.state = 'fulfilled'
       } catch (error) {
         self.state = 'rejected'
@@ -42,7 +37,7 @@ const ViolationStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.violationGateway
-        const newViolation = yield createViolation(data, gateway)
+        const newViolation = yield gateway.createViolation(data)
         self.violations.push(newViolation)
         self.state = 'fulfilled'
       } catch (error) {
@@ -53,7 +48,7 @@ const ViolationStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.violationGateway
-        const updatedViolation = yield updateViolation(data, gateway)
+        const updatedViolation = yield gateway.updateViolation(data)
         const index = self.violations.findIndex((violation) => violation._id === data._id)
         if (index !== -1) {
           self.violations[index] = updatedViolation
@@ -67,7 +62,7 @@ const ViolationStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.violationGateway
-        yield deleteViolation(id, gateway)
+        yield gateway.deleteViolation(id)
         self.violations = self.violations.filter((violation) => violation._id !== id)
         self.state = 'fulfilled'
       } catch (error) {

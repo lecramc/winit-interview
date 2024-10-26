@@ -1,3 +1,3 @@
-export const updateViolation = async (updatedData, gateway) => {
-  return await gateway.updateViolation(updatedData)
+export const updateViolationUsecase = (updatedData) => async (store) => {
+  await store.violation.updateViolation(updatedData)
 }

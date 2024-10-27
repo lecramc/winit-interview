@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
-import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory.js'
+import { AttorneyFactory } from '@/modules/attorney/core/factories/attorney.factory.js'
 import { FakeAttorneyGateway } from '@/modules/attorney/core/gateways-infra/fake-attorney.gateway.js'
 import { getAttorneyByIdUsecase } from '@/modules/attorney/core/usecases/get-attorney-by-id.usecase.js'
 

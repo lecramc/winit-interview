@@ -2,7 +2,7 @@ import { Controller } from 'react-hook-form'
 import CustomTextField from '@/modules/app/components/fields/CustomInput.jsx'
 import { Box, Checkbox, FormControlLabel } from '@mui/material'
 import CustomButton from '@/modules/app/components/buttons/Button.jsx'
-import { AttorneyDrawerViewModelType } from '@/modules/attorney/ui/panel/drawer/attorney-drawer.viewmodel.js'
+import { AttorneyDrawerViewModelType } from '@/modules/attorney/ui/drawer/attorney-drawer.viewmodel.js'
 import React from 'react'
 
 export const AttorneyForm = ({

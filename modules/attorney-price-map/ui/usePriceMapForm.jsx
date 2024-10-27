@@ -28,6 +28,7 @@ const usePriceMapForm = (selectedPriceMap, onClose) => {
       pointsRangeMin: '',
       pointsRangeMax: '',
       price: '',
+      enable: true,
     },
   })
 
@@ -47,6 +48,7 @@ const usePriceMapForm = (selectedPriceMap, onClose) => {
         pointsRangeMin: selectedPriceMap.pointsRange ? selectedPriceMap.pointsRange[0] : '',
         pointsRangeMax: selectedPriceMap.pointsRange ? selectedPriceMap.pointsRange[1] : '',
         price: selectedPriceMap.price || '',
+        enable: selectedPriceMap.enable ?? true,
       })
     } else {
       reset({
@@ -57,6 +59,7 @@ const usePriceMapForm = (selectedPriceMap, onClose) => {
         pointsRangeMin: '',
         pointsRangeMax: '',
         price: '',
+        enable: true,
       })
     }
   }, [selectedPriceMap, reset])

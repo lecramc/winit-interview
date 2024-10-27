@@ -20,7 +20,7 @@ export const priceMapsViewModel = (store) => {
       type: PriceMapsViewModelType.Rejected,
     }
   }
-  if ((priceMaps.length === 0 && priceMaps === 'fulfilled') || priceMaps === 'idle') {
+  if (priceMaps.length === 0 && (priceMapsState === 'fulfilled' || priceMapsState === 'idle')) {
     return {
       type: PriceMapsViewModelType.WithoutPriceMaps,
     }

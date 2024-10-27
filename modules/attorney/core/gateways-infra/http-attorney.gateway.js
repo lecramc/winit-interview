@@ -8,7 +8,7 @@ export const attorneyDto = z.object({
   email: z.string(),
   address: z.optional(z.string()),
   phone: z.optional(z.string()),
-  enabled: z.boolean(),
+  enable: z.boolean(),
 })
 
 const responseDto = z.object({

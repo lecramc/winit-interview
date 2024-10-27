@@ -20,7 +20,7 @@ const AttorneySchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  enabled: {
+  enable: {
     type: Boolean,
     default: true,
   },

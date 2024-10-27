@@ -1,7 +1,7 @@
 import React from 'react'
-import { Autocomplete, Box, Typography } from '@mui/material'
+import { Autocomplete, Box, Checkbox, FormControlLabel, Typography } from '@mui/material'
 import { Controller } from 'react-hook-form'
-import usePriceMapForm from '@/modules/attorney-price-map/ui/price-map-drawer/usePriceMapForm.jsx'
+import usePriceMapForm from '@/modules/attorney-price-map/ui/usePriceMapForm.jsx'
 import CustomInput from '@/modules/app/components/fields/CustomInput.jsx'
 import CustomButton from '@/modules/app/components/buttons/Button.jsx'
 
@@ -19,6 +19,23 @@ const PriceMapForm = ({ selectedPriceMap, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <Controller
+        name="enable"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                {...field}
+                checked={field.value}
+                onChange={(e) => field.onChange(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Enable"
+          />
+        )}
+      />
       {/* Select Attorney */}
       <Controller
         name="attorney"

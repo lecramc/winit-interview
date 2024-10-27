@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { HttpAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/http-attorney-price-map.gateway.js'
-import mongoose from 'mongoose'
 import { beforeEachConfig } from '@/modules/app/utils/beforEachConfig.js'
 import { createAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/create-attorney-price-map.usecase.js'
 import { getAttorneyPriceMapsUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-maps.usecase.js'
@@ -23,11 +22,13 @@ beforeEach(async () => {
 
 describe('Integration Test: API with Test DB for AttorneyPriceMap', () => {
   test('Create PriceMap', async () => {
+    const priceMap = store.attorneyPriceMap.priceMaps[0]
     const newPriceMap = {
-      attorney: new mongoose.Types.ObjectId(),
-      court: new mongoose.Types.ObjectId(),
-      price: 400,
-      pointsRange: [1, 4],
+      court: priceMap.court,
+      county: priceMap.county,
+      attorney: priceMap.attorney,
+      pointsRange: [1, 3],
+      price: 300,
     }
     await createAttorneyPriceMapUsecase(newPriceMap)(store)
     expect(store.attorneyPriceMap.state).toBe('fulfilled')

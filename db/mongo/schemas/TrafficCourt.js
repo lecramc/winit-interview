@@ -19,7 +19,7 @@ const TrafficCourtSchema = new mongoose.Schema({
     ref: 'TrafficState',
     required: true,
   },
-  enabled: {
+  enable: {
     type: Boolean,
     default: true,
   },

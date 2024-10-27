@@ -1,10 +1,10 @@
-import createTestStore from '@/modules/app/stores/TestStore'
+import createTestStore from '@/modules/app/stores/TestStore.js'
 
 import { describe, expect, test } from 'vitest'
 import {
   attorneyViewModel,
   AttorneyViewModelType,
-} from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
+} from '@/modules/attorney/ui/attorneys-panel.view-model.js'
 import { AttorneyFactory } from '@/modules/attorney/core/factories/attorney.factory.js'
 
 describe('AttorneyViewModel tests', () => {

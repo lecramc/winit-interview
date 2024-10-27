@@ -22,7 +22,7 @@ describe('Integration Test: API with Test DB', () => {
       email: 'clement@example.com',
       address: '123 Main St',
       phone: '123-456-7890',
-      enabled: true,
+      enable: true,
     }
 
     await store.attorney.createAttorney(newAttorney)

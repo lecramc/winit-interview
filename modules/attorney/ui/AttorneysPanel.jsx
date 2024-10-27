@@ -4,14 +4,14 @@ import { Typography } from '@mui/material'
 import {
   attorneyViewModel,
   AttorneyViewModelType,
-} from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
+} from '@/modules/attorney/ui/attorneys-panel.view-model.js'
 import ErrorMessage from '@/modules/app/components/error/Error.jsx'
 import LoadingSpinner from '@/modules/app/components/spinner/LoadingSpinner.jsx'
-import AttorneyDrawer from '@/modules/attorney/ui/panel/drawer/AttorneyDrawer.jsx'
+import AttorneyDrawer from '@/modules/attorney/ui/drawer/AttorneyDrawer.jsx'
 import ConfirmationModal from '@/modules/app/components/modal/ConfirmationModal.jsx'
-import useAttorneysPanel from '@/modules/attorney/ui/panel/useAttorneyPanel.js'
+import useAttorneysPanel from '@/modules/attorney/ui/useAttorneyPanel.js'
 import useStore from '@/modules/app/hooks/useStore.js'
-import AttorneysList from '@/modules/attorney/ui/panel/AttorneysList.jsx'
+import AttorneysList from '@/modules/attorney/ui/AttorneysList.jsx'
 
 const AttorneysPanel = observer(() => {
   const store = useStore()

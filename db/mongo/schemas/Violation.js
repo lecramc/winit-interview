@@ -10,6 +10,10 @@ const ViolationSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  enable: {
+    type: Boolean,
+    default: true,
+  },
 })
 
-export default mongoose.models.Violation || mongoose.model('Violation', ViolationSchema);
+export default mongoose.models.Violation || mongoose.model('Violation', ViolationSchema)

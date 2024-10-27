@@ -47,7 +47,7 @@ const AttorneysList = ({
                 <Chip
                   label={attorney.enable ? 'Active' : 'Inactive'}
                   size="small"
-                  color="success"
+                  color={attorney.enable ? 'success' : 'error'}
                   variant="outlined"
                 />
               }

@@ -6,12 +6,12 @@ import CloseIcon from '@mui/icons-material/Close'
 import {
   attorneyDrawerViewModel,
   AttorneyDrawerViewModelType,
-} from '@/modules/attorney/ui/panel/drawer/attorney-drawer.viewmodel.js'
+} from '@/modules/attorney/ui/drawer/attorney-drawer.viewmodel.js'
 import ErrorMessage from '@/modules/app/components/error/Error.jsx'
 import LoadingSpinner from '@/modules/app/components/spinner/LoadingSpinner.jsx'
 import { updateAttorneyUsecase } from '@/modules/attorney/core/usecases/update-attorney.usecase.js'
 import { createAttorneyUsecase } from '@/modules/attorney/core/usecases/create-attorney.usecase.js'
-import { AttorneyForm } from '@/modules/attorney/ui/panel/AttorneyForm.jsx'
+import { AttorneyForm } from '@/modules/attorney/ui/AttorneyForm.jsx'
 import PriceMapsList from '@/modules/attorney-price-map/ui/PriceMapsTable.jsx'
 
 const AttorneyDrawer = ({ open, handleClose, store }) => {
@@ -91,9 +91,7 @@ const AttorneyDrawer = ({ open, handleClose, store }) => {
               submitHandler={submitHandler}
               viewModel={viewModel}
               handleClose={handleClose}
-            >
-              <PriceMapsList priceMaps={viewModel.priceMaps} />
-            </AttorneyForm>
+            />
           </>
         )
 

@@ -26,7 +26,6 @@ describe('Feature: retrieve attorney price maps', () => {
     thenIShouldHaveAllPriceMaps([
       AttorneyPriceMapFactory.create({
         _id: '1',
-
         pointsRange: [1, 3],
         price: 250,
       }),

@@ -7,9 +7,9 @@ import { AttorneyModel } from '@/modules/attorney/core/stores/attorney.store.js'
 const AttorneyPriceMapModel = types.model('AttorneyPriceMap', {
   _id: types.identifier,
   attorney: AttorneyModel,
-  court: types.maybeNull(TrafficCourtModel),
-  county: types.maybeNull(TrafficCountyModel),
-  violation: types.maybeNull(ViolationModel),
+  court: types.maybeNull(types.union(TrafficCourtModel, types.string)),
+  county: types.maybeNull(types.union(TrafficCountyModel, types.string)),
+  violation: types.maybeNull(types.union(ViolationModel, types.string)),
   pointsRange: types.array(types.number),
   price: types.number,
   enable: types.optional(types.boolean, true),
@@ -34,6 +34,7 @@ const AttorneyPriceMapStore = types
         self.priceMaps = yield gateway.getAttorneyPriceMaps()
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -44,6 +45,7 @@ const AttorneyPriceMapStore = types
         self.selectedPriceMap = yield gateway.getAttorneyPriceMapById(id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -55,6 +57,7 @@ const AttorneyPriceMapStore = types
         self.priceMaps.push(newPriceMap)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -69,6 +72,7 @@ const AttorneyPriceMapStore = types
         }
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -80,6 +84,7 @@ const AttorneyPriceMapStore = types
         self.priceMaps = self.priceMaps.filter((priceMap) => priceMap._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),

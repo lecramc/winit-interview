@@ -131,3 +131,25 @@ Using design patterns can improve the code's readability, maintainability, and s
 
 - Write tests: Ensure your code is covered by integration tests (optional)
 - Add styling: Use @mui/material for components styling (mandatory)
+
+
+
+### How to launch the application
+
+1. Clone the repository
+2. Install dependencies
+3. Run docker-compose up --build or docker compose up --build
+4. Go to http://localhost:3000
+5. Create or use user with : email user@example.com and password : password123
+
+#### Testing
+
+1. Run the tests with vitest
+   ```bash
+   npm run test
+   ```
+   
+2. Run the integration tests with vitest
+   ```bash
+   npm run test:integration
+   ```

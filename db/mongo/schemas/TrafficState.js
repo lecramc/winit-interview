@@ -11,10 +11,10 @@ const TrafficStateSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  enabled: {
+  enable: {
     type: Boolean,
     default: true,
   },
 })
 
-export default mongoose.models.TrafficState || mongoose.model('TrafficState', TrafficStateSchema);
+export default mongoose.models.TrafficState || mongoose.model('TrafficState', TrafficStateSchema)

@@ -20,16 +20,14 @@ const AttorneyPriceMapSchema = new mongoose.Schema({
   },
   pointsRange: {
     type: [Number],
-    validate: {
-      validator: function (v) {
-        return this.violation || (Array.isArray(v) && v.length === 2)
-      },
-      message: 'pointsRange must be an array of two numbers if no violation is specified.',
-    },
   },
   price: {
     type: Number,
     required: true,
+  },
+  enable: {
+    type: Boolean,
+    default: true,
   },
 })
 

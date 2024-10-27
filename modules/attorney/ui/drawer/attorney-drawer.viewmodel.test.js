@@ -5,7 +5,7 @@ import { AttorneyFactory } from '@/modules/attorney/core/factories/attorney.fact
 import {
   attorneyDrawerViewModel,
   AttorneyDrawerViewModelType,
-} from '@/modules/attorney/ui/panel/drawer/attorney-drawer.viewmodel.js'
+} from '@/modules/attorney/ui/drawer/attorney-drawer.viewmodel.js'
 
 describe('AttorneyModalViewModel tests', () => {
   test('When selectedAttorney state is pending, ViewModel type is Loading', () => {

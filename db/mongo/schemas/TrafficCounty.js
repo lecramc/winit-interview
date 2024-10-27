@@ -12,7 +12,7 @@ const TrafficCountySchema = new mongoose.Schema({
     required: true,
   },
 
-  enabled: {
+  enable: {
     type: Boolean,
     default: true,
   },

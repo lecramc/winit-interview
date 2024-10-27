@@ -1,11 +1,29 @@
 import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
 import { AttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways/attorney-price-map.gateway.js'
-import { violationDto } from '@/modules/violation/core/gateways-infra/http-violation.gateway.js'
-import { trafficCourtDto } from '@/modules/traffic-court/core/gateways-infra/http-traffic-court.gateway.js'
-import { trafficCountyDto } from '@/modules/traffic-county/core/gateways-infra/http-traffic-county.gateway.js'
 import { attorneyDto } from '@/modules/attorney/core/gateways-infra/http-attorney.gateway.js'
 
+const trafficCourtDto = z.object({
+  _id: z.string(),
+  name: z.string(),
+  address: z.string().optional(),
+  trafficCounty: z.string(),
+  trafficState: z.string(),
+  enable: z.boolean(),
+})
+
+const trafficCountyDto = z.object({
+  _id: z.string(),
+  name: z.string(),
+  trafficState: z.string(),
+  enable: z.boolean(),
+})
+
+const violationDto = z.object({
+  _id: z.string(),
+  name: z.string(),
+  points: z.number(),
+})
 const attorneyPriceMapDto = z.object({
   _id: z.string(),
   attorney: attorneyDto,
@@ -32,6 +50,7 @@ export class HttpAttorneyPriceMapGateway extends AttorneyPriceMapGateway {
     const unvalidatedResponse = await axios.get('/attorney-price-map-data')
     const result = getAttorneyPriceMapsDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
+      console.error('Validation error:', result.error)
       throw new Error('Failed to fetch attorney price maps')
     }
     return result.data.data
@@ -48,13 +67,12 @@ export class HttpAttorneyPriceMapGateway extends AttorneyPriceMapGateway {
 
   async createAttorneyPriceMap(newPriceMap) {
     const unvalidatedResponse = await axios.post('/attorney-price-map-data', {
-      violation: newPriceMap.violation._id || null,
-      court: newPriceMap.court._id || null,
-      county: newPriceMap.county._id || null,
-      attorney: newPriceMap.attorney._id,
+      court: newPriceMap.court?._id || null,
+      county: newPriceMap.county?._id || null,
+      attorney: newPriceMap.attorney?._id,
       pointsRange: newPriceMap.pointsRange,
       price: newPriceMap.price,
-      enable: newPriceMap.enable,
+      enable: newPriceMap.enable ?? true,
     })
     const result = singleAttorneyPriceMapDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {

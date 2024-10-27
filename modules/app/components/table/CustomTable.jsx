@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Box,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -12,42 +13,25 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { alpha } from '@mui/system/colorManipulator'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import useTableData from '@/modules/app/components/table/useCustomTable.jsx'
 
 const getNestedValue = (obj, path) => {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj)
 }
 
-const CustomTable = ({ columns, data, title }) => {
-  const [filters, setFilters] = useState({})
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
-
-  const handleFilterChange = (e, field) => {
-    setFilters({
-      ...filters,
-      [field]: e.target.value,
-    })
-  }
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }
-
-  const filteredData = data.filter((row) =>
-    columns.every((column) => {
-      const value = getNestedValue(row, column.field) || ''
-      const filterValue = filters[column.field] || ''
-      return value.toString().toLowerCase().includes(filterValue.toLowerCase())
-    }),
-  )
-
-  const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+const CustomTable = ({ columns, data, title, onEdit, onDelete }) => {
+  const {
+    filters,
+    page,
+    rowsPerPage,
+    paginatedData,
+    filteredDataCount,
+    handleFilterChange,
+    handleChangePage,
+    handleChangeRowsPerPage,
+  } = useTableData(data, columns)
 
   if (!data || data.length === 0) {
     return <Typography variant="body1">No data available.</Typography>
@@ -66,7 +50,7 @@ const CustomTable = ({ columns, data, title }) => {
       >
         <Table aria-label="data table">
           <TableHead>
-            <TableRow sx={{ bgcolor: (theme) => alpha(theme.palette.primary.main, 0.2) }}>
+            <TableRow sx={{ bgcolor: '#f5f5f5' }}>
               {columns.map((column, index) => (
                 <TableCell
                   key={index}
@@ -78,7 +62,7 @@ const CustomTable = ({ columns, data, title }) => {
                   }}
                 >
                   <TextField
-                    variant="outlined"
+                    variant="standard"
                     size="small"
                     placeholder={column.headerName}
                     value={filters[column.field] || ''}
@@ -86,6 +70,14 @@ const CustomTable = ({ columns, data, title }) => {
                   />
                 </TableCell>
               ))}
+              <TableCell
+                sx={{
+                  textAlign: 'center',
+                  padding: '8px',
+                }}
+              >
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -104,6 +96,14 @@ const CustomTable = ({ columns, data, title }) => {
                       : getNestedValue(row, column.field) || ''}
                   </TableCell>
                 ))}
+                <TableCell align="center">
+                  <IconButton onClick={() => onEdit(row)} color="primary" aria-label="edit">
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => onDelete(row)} color="error" aria-label="delete">
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -111,7 +111,7 @@ const CustomTable = ({ columns, data, title }) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={filteredData.length}
+          count={filteredDataCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

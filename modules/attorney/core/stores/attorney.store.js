@@ -19,6 +19,9 @@ const AttorneyStore = types
     getSelectedAttorney() {
       return self.selectedAttorney
     },
+    getAttorneys() {
+      return self.attorneys
+    },
   }))
   .actions((self) => ({
     fetchAttorneys: flow(function* () {
@@ -28,6 +31,7 @@ const AttorneyStore = types
         self.attorneys = yield gateway.getAttorneys()
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         console.log(error)
         self.state = 'rejected'
       }
@@ -40,6 +44,7 @@ const AttorneyStore = types
         self.selectedAttorney = yield gateway.getAttorneyById(id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -52,6 +57,7 @@ const AttorneyStore = types
         self.attorneys.push(createdAttorney)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -70,6 +76,7 @@ const AttorneyStore = types
         }
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -82,6 +89,7 @@ const AttorneyStore = types
         self.attorneys = self.attorneys.filter((attorney) => attorney._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),

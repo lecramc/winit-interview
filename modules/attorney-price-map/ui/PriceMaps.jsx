@@ -7,19 +7,20 @@ import { Box, Typography } from '@mui/material'
 import LoadingSpinner from '@/modules/app/components/spinner/LoadingSpinner.jsx'
 import ErrorMessage from '@/modules/app/components/error/Error.jsx'
 import useStore from '@/modules/app/hooks/useStore.js'
-import PriceMapsTable from '@/modules/attorney-price-map/ui/price-map/PriceMapsTable.jsx'
+import PriceMapsTable from '@/modules/attorney-price-map/ui/PriceMapsTable.jsx'
 import CustomButton from '@/modules/app/components/buttons/Button.jsx'
-import PriceMapDrawer from '@/modules/attorney-price-map/ui/price-map-drawer/PriceMapDrawer.jsx'
 import { useState } from 'react'
 import { getAttorneyPriceMapByIdUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-map-by-id.usecase.js'
 import ConfirmationModal from '@/modules/app/components/modal/ConfirmationModal.jsx'
 import { deleteAttorneyPriceMapUsecase } from '@/modules/attorney-price-map/core/usecases/delete-attorney-price-map.usecase.js'
+import CustomDrawer from '@/modules/app/components/drawer/CustomDrawer.jsx'
+import PriceMapForm from '@/modules/attorney-price-map/ui/PriceMapForm.jsx'
 
 const PriceMaps = observer(() => {
   const [openDrawer, setOpenDrawer] = useState(false)
   const [itemToDelete, setItemToDelete] = useState(null)
-
   const store = useStore()
+  const selectedPriceMap = store.attorneyPriceMap.getSelectedPriceMap()
   const viewModel = priceMapsViewModel(store)
 
   const handleEditRow = async (priceMap) => {
@@ -68,11 +69,13 @@ const PriceMaps = observer(() => {
               onEdit={handleEditRow}
               onDelete={handleDeleteRow}
             />
-            <PriceMapDrawer
+            <CustomDrawer
               open={openDrawer}
               onClose={handleCloseDrawer}
-              onDelete={handleDeleteRow}
-            />
+              title={selectedPriceMap ? 'Edit Traffic State' : 'Create Traffic State'}
+            >
+              <PriceMapForm selectedPriceMap={selectedPriceMap} onClose={handleCloseDrawer} />
+            </CustomDrawer>
           </>
         )
       default:

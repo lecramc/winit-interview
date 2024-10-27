@@ -1,5 +1,5 @@
-import RegisterForm from '@/modules/auth/ui/RegisterForm.jsx'
+import { Register } from '@/modules/auth/ui/Register/Register.jsx'
 
 export default function Page() {
-  return <RegisterForm />
+  return <Register />
 }

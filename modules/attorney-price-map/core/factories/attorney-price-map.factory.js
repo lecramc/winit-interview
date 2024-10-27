@@ -8,6 +8,7 @@ export class AttorneyPriceMapFactory {
       violation: data.violation || null,
       pointsRange: data.pointsRange || [0, 0],
       price: data.price || 0,
+      enable: data.enable || true,
     }
   }
 }

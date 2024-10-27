@@ -17,6 +17,7 @@ export class HttpAuthGateway extends AuthGateway {
       email,
       password,
     })
+
     const response = userDto.safeParse(unvalidatedResponse.data)
     if (!response.success) {
       throw new Error('Failed to login')

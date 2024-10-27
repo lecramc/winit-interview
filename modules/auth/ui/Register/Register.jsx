@@ -1,54 +1,58 @@
-import { loginViewModel, LoginViewModelType } from '@/modules/auth/ui/Login/login.viewmodel.js'
 import React, { useEffect, useState } from 'react'
 import useStore from '@/modules/app/hooks/useStore.js'
 import { observer } from 'mobx-react'
-import LoginForm from '@/modules/auth/ui/Login/LoginForm.jsx'
 import Toast from '@/modules/app/components/toast/Toast.jsx'
 import { useRouter } from 'next/router'
-import { loginUsecase } from '@/modules/auth/core/usecases/login.usecase.js'
+import {
+  registerViewModel,
+  RegisterViewModelType,
+} from '@/modules/auth/ui/Register/register.viewmodel.js'
+import { registerUsecase } from '@/modules/auth/core/usecases/register.usecase.js'
+import RegisterForm from '@/modules/auth/ui/Register/RegisterForm.jsx'
 
-export const Login = observer(() => {
+export const Register = observer(() => {
   const store = useStore()
   const router = useRouter()
-  const viewModel = loginViewModel(store)
+  const viewModel = registerViewModel(store)
   const [alertOpen, setAlertOpen] = useState(true)
 
   useEffect(() => {
-    if (viewModel.type === LoginViewModelType.Success && store.auth.user) {
-      router.push('/dashboard')
+    console.log(viewModel.type, viewModel.errorMessage)
+    if (viewModel.type === RegisterViewModelType.Success) {
+      router.push('/login')
     }
   }, [viewModel.type, router])
 
   const onSubmit = async (data) => {
-    await loginUsecase(data)(store)
+    await registerUsecase(data)(store)
   }
 
   const alertNode = (() => {
     switch (viewModel.type) {
-      case LoginViewModelType.Loading:
+      case RegisterViewModelType.Loading:
         return (
           <Toast
             open={alertOpen}
-            message="Logging in..."
+            message="Registering..."
             severity="info"
             onClose={() => setAlertOpen(false)}
           />
         )
-      case LoginViewModelType.Rejected:
+      case RegisterViewModelType.Rejected:
         return (
           <Toast
             open={alertOpen}
-            message={viewModel.errorMessage || 'Login failed'}
+            message={viewModel.errorMessage || 'Register failed'}
             severity="error"
             onClose={() => setAlertOpen(false)}
             autoHideDuration={5000}
           />
         )
-      case LoginViewModelType.Success:
+      case RegisterViewModelType.Success:
         return (
           <Toast
             open={alertOpen}
-            message="Login successful!"
+            message="Register successful!"
             severity="success"
             onClose={() => setAlertOpen(false)}
           />
@@ -60,7 +64,7 @@ export const Login = observer(() => {
 
   return (
     <>
-      <LoginForm onSubmit={onSubmit} />
+      <RegisterForm onSubmit={onSubmit} />
       {alertNode}
     </>
   )

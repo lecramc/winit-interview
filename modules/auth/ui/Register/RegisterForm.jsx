@@ -1,9 +1,10 @@
 import React from 'react'
-import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import { Box, Container, TextField, Typography } from '@mui/material'
 import Link from 'next/link'
 import { Controller, useForm } from 'react-hook-form'
 import { registerUsecase } from '@/modules/auth/core/usecases/register.usecase.js'
 import useStore from '@/modules/app/hooks/useStore.js'
+import CustomButton from '@/modules/app/components/buttons/Button.jsx'
 
 function RegisterForm() {
   const store = useStore()
@@ -36,37 +37,18 @@ function RegisterForm() {
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Controller
-            name="firstName"
+            name="name"
             control={control}
             defaultValue=""
-            rules={{ required: 'First name is required' }}
+            rules={{ required: 'Complete name is required' }}
             render={({ field }) => (
               <TextField
                 {...field}
-                label="First Name"
+                label="Firstname Lastname"
                 variant="outlined"
                 size="small"
-                error={!!errors.firstName}
-                helperText={errors.firstName ? errors.firstName.message : ''}
-                fullWidth
-                margin="normal"
-              />
-            )}
-          />
-
-          <Controller
-            name="lastName"
-            control={control}
-            defaultValue=""
-            rules={{ required: 'Last name is required' }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Last Name"
-                variant="outlined"
-                size="small"
-                error={!!errors.lastName}
-                helperText={errors.lastName ? errors.lastName.message : ''}
+                error={!!errors.name}
+                helperText={errors.name ? errors.name.message : ''}
                 fullWidth
                 margin="normal"
               />
@@ -147,7 +129,7 @@ function RegisterForm() {
             )}
           />
 
-          <Button
+          <CustomButton
             type="submit"
             variant="contained"
             color="primary"
@@ -156,7 +138,7 @@ function RegisterForm() {
             sx={{ mt: 2 }}
           >
             Sign Up
-          </Button>
+          </CustomButton>
 
           <Box mt={2}>
             <Typography variant="body2">

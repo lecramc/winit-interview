@@ -1,7 +1,8 @@
 import React from 'react'
-import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import { Box, Container, TextField, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import Link from 'next/link'
+import CustomButton from '@/modules/app/components/buttons/Button.jsx'
 
 function LoginForm({ onSubmit }) {
   const {
@@ -77,7 +78,7 @@ function LoginForm({ onSubmit }) {
             )}
           />
 
-          <Button
+          <CustomButton
             type="submit"
             variant="contained"
             color="primary"
@@ -86,7 +87,7 @@ function LoginForm({ onSubmit }) {
             sx={{ mt: 2 }}
           >
             Log In
-          </Button>
+          </CustomButton>
 
           <Box mt={2}>
             <Typography variant="body2">

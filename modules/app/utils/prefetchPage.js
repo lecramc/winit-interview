@@ -4,6 +4,6 @@ import { createStore } from '@/modules/app/stores/AppStore.js'
 
 export const prefetchPage = async (ctx) => {
   const store = createStore({ dependencies: storeDependencies })
-  await checkAuth(store, ctx.req.cookies)
+  await checkAuth(store, ctx)
   return store
 }

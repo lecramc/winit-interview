@@ -39,7 +39,7 @@ export const AuthStore = types
         const authGateway = getParent(self).dependencies.authGateway
         yield authGateway.logout()
         self.user = null
-        self.authState = 'fulfilled'
+        self.authState = 'idle'
       } catch (error) {
         self.authState = 'rejected'
         self.errorMessage = error.message

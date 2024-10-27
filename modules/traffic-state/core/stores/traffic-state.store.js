@@ -1,9 +1,10 @@
 import { flow, getParent, types } from 'mobx-state-tree'
 
-const TrafficStateModel = types.model('TrafficState', {
+export const TrafficStateModel = types.model('TrafficState', {
   _id: types.identifier,
   longName: types.string,
   shortName: types.string,
+  enable: types.optional(types.boolean, true),
 })
 
 const TrafficStateStore = types
@@ -12,6 +13,14 @@ const TrafficStateStore = types
     selectedTrafficState: types.maybeNull(TrafficStateModel),
     state: types.optional(types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']), 'idle'),
   })
+  .views((self) => ({
+    getTrafficStates() {
+      return self.trafficStates
+    },
+    getSelectedTrafficState() {
+      return self.selectedTrafficState
+    },
+  }))
   .actions((self) => ({
     fetchTrafficStates: flow(function* () {
       self.state = 'pending'
@@ -20,6 +29,7 @@ const TrafficStateStore = types
         self.trafficStates = yield gateway.getTrafficStates()
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -30,6 +40,7 @@ const TrafficStateStore = types
         self.selectedTrafficState = yield gateway.getTrafficStateById(id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -41,6 +52,7 @@ const TrafficStateStore = types
         self.trafficStates.push(newState)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -55,6 +67,7 @@ const TrafficStateStore = types
         }
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -66,9 +79,13 @@ const TrafficStateStore = types
         self.trafficStates = self.trafficStates.filter((state) => state._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
+    clearSelectedTrafficState() {
+      self.selectedTrafficState = null
+    },
   }))
 
 export default TrafficStateStore

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficStateGateway } from '@/modules/traffic-state/core/gateways-infra/fake-traffic-state.gateway.js'
-import { TrafficStateFactory } from '@/modules/traffic-state/core/entities/traffic-state.factory.js'
+import { TrafficStateFactory } from '@/modules/traffic-state/core/factories/traffic-state.factory.js'
 import { getTrafficStateByIdUsecase } from '@/modules/traffic-state/core/usecases/get-traffic-state-by-id.usecase.js'
 
 describe('Feature: retrieve traffic state by ID', () => {

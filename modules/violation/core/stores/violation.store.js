@@ -4,6 +4,7 @@ export const ViolationModel = types.model('Violation', {
   _id: types.identifier,
   name: types.string,
   points: types.number,
+  enable: types.optional(types.boolean, true),
 })
 
 const ViolationStore = types
@@ -12,6 +13,14 @@ const ViolationStore = types
     selectedViolation: types.maybeNull(ViolationModel),
     state: types.optional(types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']), 'idle'),
   })
+  .views((self) => ({
+    getViolations() {
+      return self.violations
+    },
+    getSelectedViolation() {
+      return self.selectedViolation
+    },
+  }))
   .actions((self) => ({
     fetchViolations: flow(function* () {
       self.state = 'pending'
@@ -20,6 +29,7 @@ const ViolationStore = types
         self.violations = yield gateway.getViolations()
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -30,6 +40,7 @@ const ViolationStore = types
         self.selectedViolation = yield gateway.getViolationById(id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -41,6 +52,7 @@ const ViolationStore = types
         self.violations.push(newViolation)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -55,6 +67,7 @@ const ViolationStore = types
         }
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -66,9 +79,13 @@ const ViolationStore = types
         self.violations = self.violations.filter((violation) => violation._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
+    clearSelectedViolation() {
+      self.selectedViolation = null
+    },
   }))
 
 export default ViolationStore

@@ -6,6 +6,7 @@ export const violationDto = z.object({
   _id: z.string(),
   name: z.string(),
   points: z.number(),
+  enable: z.boolean(),
 })
 
 const responseDto = z.object({

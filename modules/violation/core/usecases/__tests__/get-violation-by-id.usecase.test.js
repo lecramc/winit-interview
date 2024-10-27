@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeViolationGateway } from '@/modules/violation/core/gateways-infra/fake-violation.gateway.js'
-import { ViolationFactory } from '@/modules/violation/core/entities/violation.factory.js'
+import { ViolationFactory } from '@/modules/violation/core/factories/violation.factory.js'
 import { getViolationByIdUsecase } from '@/modules/violation/core/usecases/get-violation-by-id.usecase.js'
 
 describe('Feature: retrieve violation by ID', () => {

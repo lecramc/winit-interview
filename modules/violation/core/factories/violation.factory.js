@@ -4,6 +4,7 @@ export class ViolationFactory {
       _id: '',
       name: '',
       points: 0,
+      enable: true,
       ...data,
     }
   }

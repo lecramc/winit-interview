@@ -14,6 +14,7 @@ const attorneyPriceMapDto = z.object({
   violation: violationDto.optional().nullable(),
   pointsRange: z.array(z.number()).optional().nullable(),
   price: z.number(),
+  enable: z.boolean(),
 })
 
 const getAttorneyPriceMapsDto = z.object({
@@ -46,7 +47,15 @@ export class HttpAttorneyPriceMapGateway extends AttorneyPriceMapGateway {
   }
 
   async createAttorneyPriceMap(newPriceMap) {
-    const unvalidatedResponse = await axios.post('/attorney-price-map-data', newPriceMap)
+    const unvalidatedResponse = await axios.post('/attorney-price-map-data', {
+      violation: newPriceMap.violation._id || null,
+      court: newPriceMap.court._id || null,
+      county: newPriceMap.county._id || null,
+      attorney: newPriceMap.attorney._id,
+      pointsRange: newPriceMap.pointsRange,
+      price: newPriceMap.price,
+      enable: newPriceMap.enable,
+    })
     const result = singleAttorneyPriceMapDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
       throw new Error('Failed to create attorney price map')
@@ -55,10 +64,16 @@ export class HttpAttorneyPriceMapGateway extends AttorneyPriceMapGateway {
   }
 
   async updateAttorneyPriceMap(updatedData) {
-    const unvalidatedResponse = await axios.put(
-      `/attorney-price-map-data/${updatedData._id}`,
-      updatedData,
-    )
+    const unvalidatedResponse = await axios.put(`/attorney-price-map-data/${updatedData._id}`, {
+      _id: updatedData._id,
+      violation: updatedData.violation._id || null,
+      court: updatedData.court._id || null,
+      county: updatedData.county._id || null,
+      attorney: updatedData.attorney._id,
+      pointsRange: updatedData.pointsRange,
+      price: updatedData.price,
+      enable: updatedData.enable,
+    })
     const result = singleAttorneyPriceMapDto.safeParse(unvalidatedResponse.data)
     if (!result.success) {
       throw new Error('Failed to update attorney price map')

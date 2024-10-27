@@ -12,6 +12,7 @@ const AttorneyPriceMapModel = types.model('AttorneyPriceMap', {
   violation: types.maybeNull(ViolationModel),
   pointsRange: types.array(types.number),
   price: types.number,
+  enable: types.optional(types.boolean, true),
 })
 
 const AttorneyPriceMapStore = types
@@ -20,6 +21,11 @@ const AttorneyPriceMapStore = types
     selectedPriceMap: types.maybeNull(AttorneyPriceMapModel),
     state: types.optional(types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']), 'idle'),
   })
+  .views((self) => ({
+    getSelectedPriceMap() {
+      return self.selectedPriceMap
+    },
+  }))
   .actions((self) => ({
     fetchAttorneyPriceMaps: flow(function* () {
       self.state = 'pending'
@@ -79,6 +85,9 @@ const AttorneyPriceMapStore = types
     }),
     getPriceMapByAttorneyId(id) {
       return self.priceMaps.filter((priceMap) => priceMap.attorney._id === id)
+    },
+    cleanSelectedPriceMap() {
+      self.selectedPriceMap = null
     },
   }))
 

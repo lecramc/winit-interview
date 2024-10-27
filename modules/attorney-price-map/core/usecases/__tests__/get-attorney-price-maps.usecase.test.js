@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeAttorneyPriceMapGateway } from '@/modules/attorney-price-map/core/gateways-infra/fake-attorney-price-map.gateway.js'
-import { AttorneyPriceMapFactory } from '@/modules/attorney-price-map/core/entities/attorney-price-map.factory.js'
+import { AttorneyPriceMapFactory } from '@/modules/attorney-price-map/core/factories/attorney-price-map.factory.js'
 import { getAttorneyPriceMapsUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-maps.usecase.js'
 
 describe('Feature: retrieve attorney price maps', () => {
@@ -9,15 +9,13 @@ describe('Feature: retrieve attorney price maps', () => {
     givenPreviouslyCreatedPriceMaps([
       AttorneyPriceMapFactory.create({
         _id: '1',
-        attorney: 'attorney-id-1',
-        court: 'court-id-1',
+
         pointsRange: [1, 3],
         price: 250,
       }),
       AttorneyPriceMapFactory.create({
         _id: '2',
-        attorney: 'attorney-id-2',
-        county: 'county-id-1',
+
         pointsRange: [4, 6],
         price: 300,
       }),
@@ -28,15 +26,13 @@ describe('Feature: retrieve attorney price maps', () => {
     thenIShouldHaveAllPriceMaps([
       AttorneyPriceMapFactory.create({
         _id: '1',
-        attorney: 'attorney-id-1',
-        court: 'court-id-1',
+
         pointsRange: [1, 3],
         price: 250,
       }),
       AttorneyPriceMapFactory.create({
         _id: '2',
-        attorney: 'attorney-id-2',
-        county: 'county-id-1',
+
         pointsRange: [4, 6],
         price: 300,
       }),

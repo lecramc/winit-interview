@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficCourtGateway } from '@/modules/traffic-court/core/gateways-infra/fake-traffic-court.gateway.js'
-import { TrafficCourtFactory } from '@/modules/traffic-court/core/entities/traffic-court.factory.js'
+import { TrafficCourtFactory } from '@/modules/traffic-court/core/factories/traffic-court.factory.js'
 import { getTrafficCourtsUsecase } from '@/modules/traffic-court/core/usecases/get-traffic-courts.usecase.js'
 
 describe('Feature: retrieve traffic courts', () => {

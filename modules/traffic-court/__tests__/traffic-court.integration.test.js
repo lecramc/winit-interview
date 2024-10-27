@@ -3,6 +3,7 @@ import createTestStore from '@/modules/app/stores/TestStore.js'
 import { HttpTrafficCourtGateway } from '@/modules/traffic-court/core/gateways-infra/http-traffic-court.gateway.js'
 import { beforeEachConfig } from '@/modules/app/utils/beforEachConfig.js'
 import mongoose from 'mongoose'
+import { getTrafficCourtsUsecase } from '@/modules/traffic-court/core/usecases/get-traffic-courts.usecase.js'
 
 let store
 
@@ -13,7 +14,7 @@ beforeEach(async () => {
   store = createTestStore({
     dependencies: { trafficCourtGateway: gateway },
   })
-  await store.trafficCourt.fetchTrafficCourts()
+  await getTrafficCourtsUsecase()(store)
 })
 
 describe('Integration Test: API with Test DB for Traffic Courts', () => {
@@ -30,7 +31,7 @@ describe('Integration Test: API with Test DB for Traffic Courts', () => {
   })
 
   test('Use case getTrafficCourts is fulfilled', async () => {
-    await store.trafficCourt.fetchTrafficCourts()
+    await getTrafficCourtsUsecase()(store)
     expect(store.trafficCourt.state).toBe('fulfilled')
   })
 

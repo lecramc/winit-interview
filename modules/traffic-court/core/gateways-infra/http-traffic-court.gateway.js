@@ -2,25 +2,44 @@ import { z } from 'zod'
 import axios from '@/modules/app/axios.js'
 import { TrafficCourtGateway } from '@/modules/traffic-court/core/gateways/traffic-court.gateway.js'
 
+const trafficStateDto = z.object({
+  _id: z.string(),
+  shortName: z.string(),
+  longName: z.string(),
+  enable: z.boolean(),
+})
+
+const trafficCountyDto = z.object({
+  _id: z.string(),
+  name: z.string(),
+  trafficState: z.string(),
+  enable: z.boolean(),
+})
 export const trafficCourtDto = z.object({
   _id: z.string(),
   name: z.string(),
   address: z.string().optional(),
-  trafficCounty: z.string(),
-  trafficState: z.string(),
-  enabled: z.boolean(),
+  trafficCounty: trafficCountyDto.optional().nullable(),
+  trafficState: trafficStateDto.optional().nullable(),
+  enable: z.boolean(),
 })
 
-const responseDto = z.object({
+const getTrafficCourtsDto = z.object({
   success: z.boolean(),
-  data: z.union([trafficCourtDto, z.array(trafficCourtDto)]),
+  data: z.array(trafficCourtDto),
+})
+const getOneTrafficCourtDto = z.object({
+  success: z.boolean(),
+  data: trafficCourtDto,
 })
 
 export class HttpTrafficCourtGateway extends TrafficCourtGateway {
   async getTrafficCourts() {
     const response = await axios.get('/traffic-court-data')
-    const result = responseDto.safeParse(response.data)
+    const result = getTrafficCourtsDto.safeParse(response.data)
+
     if (!result.success) {
+      console.error('Validation error:', result.error)
       throw new Error('Failed to fetch traffic courts')
     }
     return result.data.data
@@ -28,7 +47,7 @@ export class HttpTrafficCourtGateway extends TrafficCourtGateway {
 
   async getTrafficCourtById(id) {
     const response = await axios.get(`/traffic-court-data/${id}`)
-    const result = responseDto.safeParse(response.data)
+    const result = getOneTrafficCourtDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to fetch traffic court by ID')
     }
@@ -37,7 +56,7 @@ export class HttpTrafficCourtGateway extends TrafficCourtGateway {
 
   async createTrafficCourt(courtData) {
     const response = await axios.post('/traffic-court-data', courtData)
-    const result = responseDto.safeParse(response.data)
+    const result = getOneTrafficCourtDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to create traffic court')
     }
@@ -46,7 +65,7 @@ export class HttpTrafficCourtGateway extends TrafficCourtGateway {
 
   async updateTrafficCourt(courtData) {
     const response = await axios.put(`/traffic-court-data/${courtData._id}`, courtData)
-    const result = responseDto.safeParse(response.data)
+    const result = getOneTrafficCourtDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to update traffic court')
     }
@@ -55,7 +74,7 @@ export class HttpTrafficCourtGateway extends TrafficCourtGateway {
 
   async deleteTrafficCourt(id) {
     const response = await axios.delete(`/traffic-court-data/${id}`)
-    const result = responseDto.safeParse(response.data)
+    const result = getOneTrafficCourtDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to delete traffic court')
     }

@@ -1,11 +1,14 @@
 import { flow, getParent, types } from 'mobx-state-tree'
+import { TrafficCountyModel } from '@/modules/traffic-county/core/stores/traffic-county.store.js'
+import { TrafficStateModel } from '@/modules/traffic-state/core/stores/traffic-state.store.js'
 
 export const TrafficCourtModel = types.model('TrafficCourt', {
   _id: types.identifier,
   name: types.string,
   address: types.string,
-  trafficCounty: types.string,
-  trafficState: types.string,
+  trafficCounty: types.maybeNull(types.union(TrafficCountyModel, types.string)),
+  trafficState: types.maybeNull(types.union(TrafficStateModel, types.string)),
+  enable: types.optional(types.boolean, true),
 })
 
 const TrafficCourtStore = types
@@ -14,6 +17,14 @@ const TrafficCourtStore = types
     selectedTrafficCourt: types.maybeNull(TrafficCourtModel),
     state: types.optional(types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']), 'idle'),
   })
+  .views((self) => ({
+    getTrafficCourts() {
+      return self.trafficCourts
+    },
+    getSelectedTrafficCourt() {
+      return self.selectedTrafficCourt
+    },
+  }))
   .actions((self) => ({
     fetchTrafficCourts: flow(function* () {
       self.state = 'pending'
@@ -22,6 +33,7 @@ const TrafficCourtStore = types
         self.trafficCourts = yield gateway.getTrafficCourts()
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -32,6 +44,7 @@ const TrafficCourtStore = types
         self.selectedTrafficCourt = yield gateway.getTrafficCourtById(id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -43,6 +56,7 @@ const TrafficCourtStore = types
         self.trafficCourts.push(newCourt)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -57,6 +71,7 @@ const TrafficCourtStore = types
         }
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -68,9 +83,13 @@ const TrafficCourtStore = types
         self.trafficCourts = self.trafficCourts.filter((court) => court._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
+    clearSelectedTrafficCourt() {
+      self.selectedTrafficCourt = null
+    },
   }))
 
 export default TrafficCourtStore

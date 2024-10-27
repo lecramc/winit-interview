@@ -1,19 +1,23 @@
 // AttorneysPanel.jsx
 import { observer } from 'mobx-react'
 import { Typography } from '@mui/material'
-import { AttorneyViewModelType } from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
-
-import AttorneysList from '@/modules/attorney/ui/panel/components/AttorneysList.jsx'
+import {
+  attorneyViewModel,
+  AttorneyViewModelType,
+} from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
 import ErrorMessage from '@/modules/app/components/error/Error.jsx'
 import LoadingSpinner from '@/modules/app/components/spinner/LoadingSpinner.jsx'
-import AttorneyDrawer from '@/modules/attorney/ui/panel/components/AttorneyDrawer.jsx'
+import AttorneyDrawer from '@/modules/attorney/ui/panel/drawer/AttorneyDrawer.jsx'
 import ConfirmationModal from '@/modules/app/components/modal/ConfirmationModal.jsx'
-import useAttorneysPanel from '@/modules/attorney/ui/panel/hooks/useAttorneyPanel.js'
+import useAttorneysPanel from '@/modules/attorney/ui/panel/useAttorneyPanel.js'
+import useStore from '@/modules/app/hooks/useStore.js'
+import AttorneysList from '@/modules/attorney/ui/panel/AttorneysList.jsx'
 
 const AttorneysPanel = observer(() => {
+  const store = useStore()
+  const viewModel = attorneyViewModel(store)
+
   const {
-    store,
-    viewModel,
     openDrawer,
     setDrawerOpen,
     selectedAttorneyToDelete,
@@ -22,8 +26,8 @@ const AttorneysPanel = observer(() => {
     handleDrawerClose,
     closeDeleteConfirmation,
     confirmDeleteAttorney,
-  } = useAttorneysPanel()
-
+  } = useAttorneysPanel(store, viewModel)
+  console.log(viewModel.type)
   const contentNode = (() => {
     switch (viewModel.type) {
       case AttorneyViewModelType.WithoutAttorneys:

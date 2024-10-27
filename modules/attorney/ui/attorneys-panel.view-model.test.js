@@ -5,7 +5,7 @@ import {
   attorneyViewModel,
   AttorneyViewModelType,
 } from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
-import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory.js'
+import { AttorneyFactory } from '@/modules/attorney/core/factories/attorney.factory.js'
 
 describe('AttorneyViewModel tests', () => {
   test('When state is pending, ViewModel type is Loading', () => {
@@ -18,9 +18,7 @@ describe('AttorneyViewModel tests', () => {
       },
     })
 
-    const attorneyStore = store.attorney
-
-    const viewModel = attorneyViewModel(attorneyStore)
+    const viewModel = attorneyViewModel(store)
 
     expect(viewModel).toEqual({
       type: AttorneyViewModelType.Loading,
@@ -35,9 +33,8 @@ describe('AttorneyViewModel tests', () => {
         },
       },
     })
-    const attorneyStore = store.attorney
 
-    const viewModel = attorneyViewModel(attorneyStore)
+    const viewModel = attorneyViewModel(store)
 
     expect(viewModel).toEqual({
       type: AttorneyViewModelType.WithoutAttorneys,
@@ -64,9 +61,7 @@ describe('AttorneyViewModel tests', () => {
       },
     })
 
-    const attorneyStore = store.attorney
-
-    const viewModel = attorneyViewModel(attorneyStore)
+    const viewModel = attorneyViewModel(store)
 
     expect(viewModel).toEqual({
       type: AttorneyViewModelType.WithAttorneys,

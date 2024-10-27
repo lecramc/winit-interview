@@ -1,14 +1,9 @@
 // useAttorneysPanel.js
 import { useState } from 'react'
-import { attorneyViewModel } from '@/modules/attorney/ui/panel/attorneys-panel.view-model.js'
-import useStore from '@/modules/app/hooks/useStore'
 import { getAttorneyByIdUsecase } from '@/modules/attorney/core/usecases/get-attorney-by-id.usecase.js'
 import { deleteAttorneyUsecase } from '@/modules/attorney/core/usecases/delete-attorney.usecase.js'
 
-const useAttorneysPanel = () => {
-  const store = useStore()
-  const viewModel = attorneyViewModel(store.attorney)
-
+const useAttorneysPanel = (store, viewModel) => {
   const [openDrawer, setDrawerOpen] = useState(false)
   const [selectedAttorneyToDelete, setSelectedAttorneyToDelete] = useState(null)
 
@@ -33,8 +28,6 @@ const useAttorneysPanel = () => {
     closeDeleteConfirmation()
   }
   return {
-    store,
-    viewModel,
     openDrawer,
     setDrawerOpen,
     selectedAttorneyToDelete,

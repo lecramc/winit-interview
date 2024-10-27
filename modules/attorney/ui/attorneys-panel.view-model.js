@@ -5,9 +5,9 @@ export const AttorneyViewModelType = {
   WithoutAttorneys: 'WithoutAttorneys',
 }
 
-export const attorneyViewModel = (attorneyStore) => {
-  const attorneys = attorneyStore.attorneys
-  const attorneysState = attorneyStore.state
+export const attorneyViewModel = (store) => {
+  const attorneys = store.attorney.attorneys
+  const attorneysState = store.attorney.state
 
   if (attorneysState === 'pending') {
     return {
@@ -20,11 +20,12 @@ export const attorneyViewModel = (attorneyStore) => {
       type: AttorneyViewModelType.Rejected,
     }
   }
-  if (attorneys.length === 0 && attorneysState === 'fulfilled') {
+  if ((attorneys.length === 0 && attorneysState === 'fulfilled') || attorneysState === 'idle') {
     return {
       type: AttorneyViewModelType.WithoutAttorneys,
     }
   }
+
   return {
     type: AttorneyViewModelType.WithAttorneys,
     attorneys: attorneys,

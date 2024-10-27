@@ -1,11 +1,11 @@
-import createTestStore from '@/modules/app/stores/TestStore'
+import createTestStore from '@/modules/app/stores/TestStore.js'
 import { describe, expect, test } from 'vitest'
 
-import { AttorneyFactory } from '@/modules/attorney/core/entities/attorney.factory'
+import { AttorneyFactory } from '@/modules/attorney/core/factories/attorney.factory.js'
 import {
   attorneyDrawerViewModel,
   AttorneyDrawerViewModelType,
-} from '@/modules/attorney/ui/panel/components/attorney-drawer.viewmodel.js'
+} from '@/modules/attorney/ui/panel/drawer/attorney-drawer.viewmodel.js'
 
 describe('AttorneyModalViewModel tests', () => {
   test('When selectedAttorney state is pending, ViewModel type is Loading', () => {
@@ -86,7 +86,6 @@ describe('AttorneyModalViewModel tests', () => {
     expect(viewModel).toEqual({
       type: AttorneyDrawerViewModelType.Edit,
       attorney: selectedAttorneyData,
-      priceMaps: [],
     })
   })
 })

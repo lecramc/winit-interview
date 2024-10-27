@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import createTestStore from '@/modules/app/stores/TestStore'
 import { FakeTrafficCountyGateway } from '@/modules/traffic-county/core/gateways-infra/fake-traffic-county.gateway.js'
-import { TrafficCountyFactory } from '@/modules/traffic-county/core/entities/traffic-county.factory.js'
+import { TrafficCountyFactory } from '@/modules/traffic-county/core/factories/traffic-county.factory.js'
 import { updateTrafficCountyUsecase } from '@/modules/traffic-county/core/usecases/update-traffic-county.usecase.js'
 
 describe('Feature: update traffic county', () => {

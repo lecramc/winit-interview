@@ -32,6 +32,5 @@ export const attorneyDrawerViewModel = (store) => {
   return {
     type: AttorneyDrawerViewModelType.Edit,
     attorney: selectedAttorney,
-    priceMaps: store.attorneyPriceMap.getPriceMapByAttorneyId(selectedAttorney._id),
   }
 }

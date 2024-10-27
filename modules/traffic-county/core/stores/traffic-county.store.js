@@ -1,10 +1,11 @@
 import { flow, getParent, types } from 'mobx-state-tree'
+import { TrafficStateModel } from '@/modules/traffic-state/core/stores/traffic-state.store.js'
 
 export const TrafficCountyModel = types.model('TrafficCounty', {
   _id: types.identifier,
   name: types.string,
-  trafficState: types.string,
-  enabled: types.optional(types.boolean, true),
+  trafficState: types.maybeNull(types.union(TrafficStateModel, types.string)),
+  enable: types.optional(types.boolean, true),
 })
 
 const TrafficCountyStore = types
@@ -13,6 +14,14 @@ const TrafficCountyStore = types
     selectedTrafficCounty: types.maybeNull(TrafficCountyModel),
     state: types.optional(types.enumeration(['pending', 'fulfilled', 'rejected', 'idle']), 'idle'),
   })
+  .views((self) => ({
+    getTrafficCounties() {
+      return self.trafficCounties
+    },
+    getSelectedTrafficCounty() {
+      return self.selectedTrafficCounty
+    },
+  }))
   .actions((self) => ({
     fetchTrafficCounties: flow(function* () {
       self.state = 'pending'
@@ -21,6 +30,7 @@ const TrafficCountyStore = types
         self.trafficCounties = yield gateway.getTrafficCounties()
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -28,10 +38,10 @@ const TrafficCountyStore = types
       self.state = 'pending'
       try {
         const gateway = getParent(self).dependencies.trafficCountyGateway
-        const county = yield gateway.getTrafficCountyById(id)
-        self.selectedTrafficCounty = county
+        self.selectedTrafficCounty = yield gateway.getTrafficCountyById(id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -43,6 +53,7 @@ const TrafficCountyStore = types
         self.trafficCounties.push(newCounty)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -57,6 +68,7 @@ const TrafficCountyStore = types
         }
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
@@ -68,9 +80,13 @@ const TrafficCountyStore = types
         self.trafficCounties = self.trafficCounties.filter((county) => county._id !== id)
         self.state = 'fulfilled'
       } catch (error) {
+        console.log(error)
         self.state = 'rejected'
       }
     }),
+    clearSelectedTrafficCounty() {
+      self.selectedTrafficCounty = null
+    },
   }))
 
 export default TrafficCountyStore

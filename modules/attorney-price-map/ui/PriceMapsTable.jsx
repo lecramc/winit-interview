@@ -23,7 +23,7 @@ const columns = [
     field: 'enable',
     align: 'center',
     render: (value) => (
-      <Chip color="success" variant="outlined" label={value ? 'Enabled' : 'Disabled'} />
+      <Chip color="success" variant="outlined" label={value ? 'Enable' : 'Disabled'} />
     ),
   },
 ]

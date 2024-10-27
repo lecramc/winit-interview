@@ -5,20 +5,33 @@ import { TrafficCountyGateway } from '@/modules/traffic-county/core/gateways/tra
 export const trafficCountyDto = z.object({
   _id: z.string(),
   name: z.string(),
-  trafficState: z.string(),
-  enabled: z.boolean(),
+  trafficState: z
+    .object({
+      _id: z.string(),
+      shortName: z.string(),
+      longName: z.string(),
+      enable: z.boolean(),
+    })
+    .optional()
+    .nullable(),
+  enable: z.boolean(),
 })
 
-const responseDto = z.object({
+const getTrafficCountiesDto = z.object({
   success: z.boolean(),
-  data: z.union([trafficCountyDto, z.array(trafficCountyDto)]),
+  data: z.array(trafficCountyDto),
+})
+const getTrafficCountyDto = z.object({
+  success: z.boolean(),
+  data: trafficCountyDto,
 })
 
 export class HttpTrafficCountyGateway extends TrafficCountyGateway {
   async getTrafficCounties() {
     const response = await axios.get('/traffic-county-data')
-    const result = responseDto.safeParse(response.data)
+    const result = getTrafficCountiesDto.safeParse(response.data)
     if (!result.success) {
+      console.error('Validation error:', result.error)
       throw new Error('Failed to fetch traffic counties')
     }
     return result.data.data
@@ -26,7 +39,8 @@ export class HttpTrafficCountyGateway extends TrafficCountyGateway {
 
   async getTrafficCountyById(id) {
     const response = await axios.get(`/traffic-county-data/${id}`)
-    const result = responseDto.safeParse(response.data)
+    const result = getTrafficCountyDto.safeParse(response.data)
+
     if (!result.success) {
       throw new Error('Failed to fetch traffic county by ID')
     }
@@ -35,7 +49,7 @@ export class HttpTrafficCountyGateway extends TrafficCountyGateway {
 
   async createTrafficCounty(countyData) {
     const response = await axios.post('/traffic-county-data', countyData)
-    const result = responseDto.safeParse(response.data)
+    const result = getTrafficCountyDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to create traffic county')
     }
@@ -44,7 +58,7 @@ export class HttpTrafficCountyGateway extends TrafficCountyGateway {
 
   async updateTrafficCounty(countyData) {
     const response = await axios.put(`/traffic-county-data/${countyData._id}`, countyData)
-    const result = responseDto.safeParse(response.data)
+    const result = getTrafficCountyDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to update traffic county')
     }
@@ -53,7 +67,7 @@ export class HttpTrafficCountyGateway extends TrafficCountyGateway {
 
   async deleteTrafficCounty(id) {
     const response = await axios.delete(`/traffic-county-data/${id}`)
-    const result = responseDto.safeParse(response.data)
+    const result = getTrafficCountyDto.safeParse(response.data)
     if (!result.success) {
       throw new Error('Failed to delete traffic county')
     }

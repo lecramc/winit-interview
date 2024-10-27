@@ -1,6 +1,7 @@
 import dbConnect from '@/modules/app/utils/dbConnect'
 import TrafficCounty from '@/db/mongo/schemas/TrafficCounty'
 import { withErrorHandling } from '@/modules/app/utils/errorMiddleware'
+import TrafficState from '@/db/mongo/schemas/TrafficState.js'
 
 async function handler(req, res) {
   const { method } = req
@@ -8,13 +9,19 @@ async function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const counties = await TrafficCounty.find().select('-__v')
+      const counties = await TrafficCounty.find()
+        .populate({ path: 'trafficState', model: TrafficState })
+        .select('-__v')
+      console.log(counties)
       res.status(200).json({ success: true, data: counties })
       break
 
     case 'POST':
       const county = await TrafficCounty.create(req.body)
-      res.status(201).json({ success: true, data: county })
+      const newCourt = await TrafficCounty.findById(county._id)
+        .populate({ path: 'trafficState', model: TrafficState })
+        .select('-__v')
+      res.status(201).json({ success: true, data: newCourt })
       break
 
     default:

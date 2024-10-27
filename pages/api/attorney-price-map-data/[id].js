@@ -28,7 +28,6 @@ async function handler(req, res) {
         runValidators: true,
       })
         .populate('attorney')
-
         .populate('court')
         .populate('county')
         .populate('violation')

@@ -6,7 +6,6 @@ export default function Page() {
 }
 export async function getServerSideProps(ctx) {
   const store = await prefetchPage(ctx)
-  console.log(store.auth.user)
   return {
     props: { initialState: getSnapshot(store) },
   }

@@ -10,7 +10,6 @@ async function handler(req, res) {
     case 'GET':
       const priceMaps = await AttorneyPriceMap.find()
         .populate('attorney')
-
         .populate('court')
         .populate('county')
         .populate('violation')

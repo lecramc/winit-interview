@@ -1,6 +1,7 @@
 import dbConnect from '@/modules/app/utils/dbConnect'
-import TrafficCounty from '@/db/mongo/schemas/TrafficCounty'
 import { withErrorHandling } from '@/modules/app/utils/errorMiddleware'
+import TrafficCounty from '@/db/mongo/schemas/TrafficCounty.js'
+import TrafficState from '@/db/mongo/schemas/TrafficState.js'
 
 async function handler(req, res) {
   const { method } = req
@@ -9,7 +10,9 @@ async function handler(req, res) {
 
   switch (method) {
     case 'GET':
-      const county = await TrafficCounty.findById(id).select('-__v')
+      const county = await TrafficCounty.findById(id)
+        .populate({ path: 'trafficState', model: TrafficState })
+        .select('-__v')
       if (!county)
         return res.status(404).json({ success: false, message: 'Traffic County not found' })
       res.status(200).json({ success: true, data: county })
@@ -19,7 +22,9 @@ async function handler(req, res) {
       const updatedCounty = await TrafficCounty.findByIdAndUpdate(id, req.body, {
         new: true,
         runValidators: true,
-      }).select('-__v')
+      })
+        .populate({ path: 'trafficState', model: TrafficState })
+        .select('-__v')
       if (!updatedCounty)
         return res.status(404).json({ success: false, message: 'Traffic County not found' })
       res.status(200).json({ success: true, data: updatedCounty })
@@ -27,6 +32,11 @@ async function handler(req, res) {
 
     case 'DELETE':
       const deletedCounty = await TrafficCounty.findByIdAndDelete(id)
+        .populate({
+          path: 'trafficState',
+          model: TrafficState,
+        })
+        .select('-__v')
       if (!deletedCounty)
         return res.status(404).json({ success: false, message: 'Traffic County not found' })
       res.status(200).json({ success: true, data: deletedCounty })

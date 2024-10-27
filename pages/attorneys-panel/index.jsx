@@ -1,10 +1,12 @@
-import AttorneysPanel from '@/modules/attorney/ui/panel/AttorneysPanel.jsx'
+import AttorneysPanel from '@/modules/attorney/ui/AttorneysPanel.jsx'
 import { getSnapshot } from 'mobx-state-tree'
 import { prefetchPage } from '@/modules/app/utils/prefetchPage.js'
 import { getAttorneysUsecase } from '@/modules/attorney/core/usecases/get-attorneys.usecase.js'
 import { getAttorneyPriceMapsUsecase } from '@/modules/attorney-price-map/core/usecases/get-attorney-price-maps.usecase.js'
 
-export const Page = () => <AttorneysPanel />
+export const Page = () => {
+  return <AttorneysPanel />
+}
 
 export default Page
 

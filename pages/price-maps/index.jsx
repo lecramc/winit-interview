@@ -5,6 +5,7 @@ import PriceMaps from '@/modules/attorney-price-map/ui/PriceMaps.jsx'
 import { getTrafficCourtsUsecase } from '@/modules/traffic-court/core/usecases/get-traffic-courts.usecase.js'
 import { getViolationsUsecase } from '@/modules/violation/core/usecases/get-violations.usecase.js'
 import { getAttorneysUsecase } from '@/modules/attorney/core/usecases/get-attorneys.usecase.js'
+import { getTrafficCountiesUsecase } from '@/modules/traffic-county/core/usecases/get-traffic-counties.usecase.js'
 
 export default function Page() {
   return <PriceMaps />
@@ -15,6 +16,7 @@ export async function getServerSideProps(req) {
   try {
     await getAttorneyPriceMapsUsecase()(store)
     await getTrafficCourtsUsecase()(store)
+    await getTrafficCountiesUsecase()(store)
     await getViolationsUsecase()(store)
     await getAttorneysUsecase()(store)
   } catch (error) {

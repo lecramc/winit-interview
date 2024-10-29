@@ -149,7 +149,7 @@ Using design patterns can improve the code's readability, maintainability, and s
    npm run test
    ```
    
-2. Run the integration tests with vitest
+2. Run the integration tests with vitest (avoid launching while the app is running, the application encounters errors if you go back to it afterwards... I didn't find out why)
    ```bash
    npm run test:integration
    ```
